@@ -1,0 +1,66 @@
+;prg31.inc 
+
+WM_SETFOCUS				equ 7h     
+WM_DESTROY			    equ 2h
+WM_CREATE    		    equ 1h
+WM_COMMAND    		    equ 111h 
+WM_SETTEXT    		    equ 0Ch 
+WM_GETTEXT    		    equ 0Dh 
+CS_VREDRAW    		    equ 1h 
+CS_HREDRAW    		    equ 2h
+CS_GLOBALCLASS   	    equ 4000h 
+WS_TABSTOP    		    equ 1000h 
+WS_SYSMENU    		    equ 8000h 
+WS_OVERLAPPEDWINDOW     equ 0 + WS_TABSTOP + WS_SYSMENU
+STYLE    			    equ CS_HREDRAW + CS_VREDRAW + CS_GLOBALCLASS 
+; wat 
+CS_HREDRAW              equ 2h      
+BS_DEFPUSHBUTTON  		equ 1h 
+WS_VISIBLE    			equ 10000000h
+WS_CHILD    			equ 40000000h
+WS_BORDER    			equ 800000h  
+STYLBTN     			equ WS_CHILD + BS_DEFPUSHBUTTON + WS_VISIBLE + WS_TABSTOP
+STYLEDT     			equ WS_CHILD + WS_VISIBLE + WS_BORDER + WS_TABSTOP 			
+IDI_APPLICATION   		equ 32512 
+IDC_ARROW    			equ 32512 
+SW_SHOWNORMAL   		equ 1
+
+EXTERN SetFocus@4:NEAR 
+EXTERN SendMessageA@16:NEAR 
+EXTERN MessageBoxA@16:NEAR 
+EXTERN CreateWindowExA@48:NEAR 
+EXTERN DefWindowProcA@16:NEAR 
+EXTERN DispatchMessageA@4:NEAR 
+EXTERN ExitProcess@4:NEAR 
+EXTERN GetMessageA@16:NEAR 
+EXTERN GetModuleHandleA@4:NEAR 
+EXTERN LoadCursorA@8:NEAR 
+EXTERN LoadIconA@8:NEAR 
+EXTERN PostQuitMessage@4:NEAR 
+EXTERN RegisterClassA@4:NEAR 
+EXTERN ShowWindow@8:NEAR 
+EXTERN TranslateMessage@4:NEAR 
+EXTERN UpdateWindow@4:NEAR 
+
+
+MSGSTRUCT STRUC 
+ MSHWND   DD ? 
+ MSMESSAGE  DD ? 
+ MSWPARAM  DD ? 
+ MSLPARAM  DD ? 
+ MSTIME   DD ? 
+ MSPT   DD ? 
+MSGSTRUCT ENDS 
+ 
+WNDCLASS STRUC 
+ CLSSTYLE  DD ? 
+ CLWNDPROC  DD ? 
+ CLSCBCLSEX  DD ? 
+ CLSCBWNDEX  DD ? 
+ CLSHINST  DD ? 
+ CLSHICON  DD ? 
+ CLSHCURSOR  DD ? 
+ CLBKGROUND  DD ? 
+ CLMENNAME  DD ? 
+ CLNAME   DD ? 
+WNDCLASS ENDS 
