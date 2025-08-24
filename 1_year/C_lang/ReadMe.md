@@ -13,11 +13,14 @@ Each assignment is placed in a separate source file, and every task is implement
 - Menu system with visual navigation.
 - Screenshots included for every task (shown below).
 
+![Menu_all](img/Menu_all.png)
+![SubMenu](img/SubMenu.png)
+
 ---
 ## 🔹Assignment 1: Basic Calculations
 
 ### Task 1.1 – Arithmetic Expression Calculator
-!(img/ex1.1.png)
+![ex1_1](img/ex1.1.png)
 A program that evaluates a user-entered arithmetic expression.  
 - Input is done via keyboard.
 - Pseudographics display the equation.
@@ -27,7 +30,10 @@ A program that evaluates a user-entered arithmetic expression.
 - Press `Enter` to calculate and display the result on a new line.
 - Press `q` at any time to exit.
 
-📸 *Screenshots: Example input and calculation process.*
+*Screenshots: Example input and calculation process.*
+
+![test1-1](img/test1-1.png)
+![test1-2](img/test1-2.png)
 
 ---
 
