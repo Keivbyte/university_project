@@ -24,7 +24,7 @@ Each assignment is placed in a separate source file, and every task is implement
 A program that evaluates a user-entered arithmetic expression.  
 - Input is done via keyboard.
 - Pseudographics display the equation.
-- Only digits and valid operators (`+`, `-`, `*`, `/`, `.`, `(`, `)`) are allowed.
+- Only digits and valid operators (`-`, `.`) are allowed.
 - Users can edit input: delete characters, add decimal point or negative sign.
 - The input buffer updates in real time.
 - Press `Enter` to calculate and display the result on a new line.
