@@ -11,9 +11,12 @@
 # Исключаем системные файлы
 .DS_Store
 Thumbs.db
-.layout
-.depend
-.cbp
+
+# IDE files
+*.cbp
+*.depend
+*.layout
+*.workspace
 
 
 # Исключаем зависимости (для языков программирования)
