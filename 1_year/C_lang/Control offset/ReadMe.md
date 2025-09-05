@@ -49,7 +49,7 @@ A program that reads multiple numbers from the user and computes a result.
 ---
 
 ### Task 1.3 – Function Table Generator  
-![ex1_3](img/ex1.3.png)
+![ex1_3](img/ex1_3.png)
 Displays a table of values for a function `y = f(x)` over the interval `[a, b]` with step `h`.  
 - Values are printed line by line with a small delay (animation effect).
 - Clear, user-friendly output.
