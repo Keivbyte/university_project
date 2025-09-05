@@ -38,22 +38,26 @@ A program that evaluates a user-entered arithmetic expression.
 ---
 
 ### Task 1.2 – Sequential Number Input  
+![ex1_2](img/ex1.2.png)
 A program that reads multiple numbers from the user and computes a result.  
 - Each number is prompted step by step.
 - Input validation: if the user enters a letter, the program asks again.
 - The program ends after all values are entered and processed.
 
 📸 *Screenshots: Input validation and final result.*
-
+![test2-1](img/test2-1.png)
 ---
 
 ### Task 1.3 – Function Table Generator  
+![ex1_3](img/ex1.3.png)
 Displays a table of values for a function `y = f(x)` over the interval `[a, b]` with step `h`.  
 - Values are printed line by line with a small delay (animation effect).
 - Clear, user-friendly output.
 
 📸 *Screenshots: Animated output of the table.*
-
+![test3-1](img/test3-1.png)
+![test3-2](img/test3-2.png)
+![test3-3](img/test3-3.png)
 ---
 
 ## 🔹 Assignment 2: Loops and Arrays
