@@ -11,12 +11,17 @@
 # Исключаем системные файлы
 .DS_Store
 Thumbs.db
+*.json
 
 # IDE files
 *.cbp
 *.depend
 *.layout
 *.workspace
+*.pro
+*.user
+*.qmake.stash
+*.idx
 
 
 # Исключаем зависимости (для языков программирования)
@@ -24,4 +29,3 @@ node_modules/
 venv/
 __pycache__/
 .idea
-

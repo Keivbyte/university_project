@@ -215,6 +215,9 @@ class Control1Widget(QWidget):
         input_group = QGroupBox("Введите значения")
         form_layout = QFormLayout()
 
+
+
+
         # Создаём поля
         self.x2 = QLineEdit();
         self.a2 = QLineEdit();
