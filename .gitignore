@@ -18,11 +18,12 @@ Thumbs.db
 *.depend
 *.layout
 *.workspace
-*.pro
 *.user
 *.qmake.stash
 *.idx
 
+# Ignore Qt project files
+*.pro
 
 # Исключаем зависимости (для языков программирования)
 node_modules/
