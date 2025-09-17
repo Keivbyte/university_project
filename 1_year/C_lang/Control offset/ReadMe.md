@@ -38,7 +38,7 @@ A program that evaluates a user-entered arithmetic expression.
 ---
 
 ### Task 1.2 – Sequential Number Input  
-![ex1_2](img/ex1.2.png)
+![ex1_2](img/ex1_2.png)
 A program that reads multiple numbers from the user and computes a result.  
 - Each number is prompted step by step.
 - Input validation: if the user enters a letter, the program asks again.
