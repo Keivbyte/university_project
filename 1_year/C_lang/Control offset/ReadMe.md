@@ -68,7 +68,7 @@ Calculates a sum using a loop — **without using arrays**.
 - A progress bar is added for visual feedback and user engagement.
 
 📸 *Screenshots: Step-by-step calculation with progress bar.*
-
+![test3-1](img/test2_1.gif)
 ---
 
 ### Task 2.2 – Data Processing from File  
