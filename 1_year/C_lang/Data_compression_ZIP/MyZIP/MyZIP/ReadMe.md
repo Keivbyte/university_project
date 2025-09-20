@@ -11,6 +11,9 @@ A simple yet effective **command-line file compression tool** built in C using *
 ![Compression Example](compression_example.png)  
 *Above: Encoding and decoding a book using MyZIP. The original text is perfectly restored after decompression.*
 
+
+![Compression Example](see.gif)  
+
 ---
 
 ## Features
