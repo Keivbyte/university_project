@@ -219,11 +219,11 @@ class Control1Widget(QWidget):
 
 
         # Создаём поля
-        self.x2 = QLineEdit();
-        self.a2 = QLineEdit();
+        self.x2 = QLineEdit()
+        self.a2 = QLineEdit()
         self.b2 = QLineEdit()
-        self.c2 = QLineEdit();
-        self.y2 = QLineEdit();
+        self.c2 = QLineEdit()
+        self.y2 = QLineEdit()
         self.p2 = QLineEdit()
 
         # Подсказки

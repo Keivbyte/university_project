@@ -1,8 +1,8 @@
 # menu_window.py
 from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QComboBox, QGroupBox, QTabWidget, QApplication
+    QWidget, QVBoxLayout, QTabWidget, QApplication
 )
-from PyQt6.QtCore import Qt, QTimer  # ← Добавлен QTimer
+from PyQt6.QtCore import Qt
 
 from control_1 import Control1Widget
 from control_2 import Control2Widget
@@ -14,14 +14,7 @@ class MenuWindow(QWidget):
         super().__init__()
         self.layout = QVBoxLayout()
 
-        # Выбор контрольной
-        group = QGroupBox("Select a test")
-        combo_layout = QVBoxLayout()
-        self.combo = QComboBox()
-        self.combo.addItems(["Control #1", "Control #2", "Control #3"])
-        combo_layout.addWidget(self.combo)
-        group.setLayout(combo_layout)
-        self.layout.addWidget(group)
+        # Убрана группа с комбобоксом
 
         # Единый QTabWidget
         self.tabs = QTabWidget()
@@ -38,15 +31,5 @@ class MenuWindow(QWidget):
 
         self.layout.addWidget(self.tabs)
 
-        # === Переключение вкладок через комбобокс ===
-        self.combo.currentIndexChanged.connect(self.switch_tab)
-
         # Устанавливаем layout
         self.setLayout(self.layout)
-
-        # Откладываем первоначальное переключение, чтобы интерфейс успел построиться
-        QTimer.singleShot(0, self.switch_tab)
-
-    def switch_tab(self):
-        index = self.combo.currentIndex()
-        self.tabs.setCurrentIndex(index)
