@@ -62,11 +62,11 @@ project/
 flowchart TD
     A[Начало Exercise_1] --> B[Ввод x, y, a, b]
     B --> C{Проверка: a == 0 или b == 0?}
-    C -->|Да| D[Возврат ошибки: "Division by zero a or b is zero"]
+    C -->|Да| D[Возврат ошибки: Division by zero a or b is zero]
     C -->|Нет| E[Вычисление numerator_cbrt = x² + y² ** 1/3]
     E --> F[Вычисление denominator_sqrt = sqrtx⁴ + y⁴]
     F --> G{denominator_sqrt == 0?}
-    G -->|Да| H[Возврат ошибки: "Denominator is zero x and y are both zero"]
+    G -->|Да| H[Возврат ошибки: Denominator is zero x and y are both zero]
     G -->|Нет| I[Вычисление bracket_term:<br>a*x² + a/b*x²*y - b/a*x*y² + b*y²]
     I --> J[Вычисление result = numerator_cbrt / denominator_sqrt * bracket_term]
     J --> K[Возврат result, None]
@@ -99,7 +99,7 @@ flowchart TD
 flowchart TD
     A[Начало Exercise_2] --> B[Ввод x, y, a, b]
     B --> C{Проверка: a == 0?}
-    C -->|Да| D[Возврат ошибки: "Division by zero a is zero"]
+    C -->|Да| D[Возврат ошибки: Division by zero a is zero]
     C -->|Нет| E[Вычисление p = a + b + x + y / 2]
     E --> F[Вычисление arg = x - p/a]
     F --> G[Вычисление sin2 = sinarg²]
@@ -107,7 +107,7 @@ flowchart TD
     H --> I[Вычисление numerator = y² + x*y + x²]
     I --> J[Вычисление denominator = a² + b²]
     J --> K{denominator == 0?}
-    K -->|Да| L[Возврат ошибки: "Denominator is zero a and b are both zero"]
+    K -->|Да| L[Возврат ошибки: Denominator is zero a and b are both zero]
     K -->|Нет| M[Вычисление result = sin2 + numerator/denominator * cos2]
     M --> N[Возврат result, None]
     D --> O[Возврат None, error]
@@ -140,26 +140,26 @@ flowchart TD
 flowchart TD
     A[Начало Exercise_3] --> B[Ввод x]
     B --> C{x ≤ -1?}
-    C -->|Да| D["result = x² - 1<br>condition = 'x ≤ -1 → y = x² - 1'"]
-    C -->|Нет| E{|x| < 1?}
-    E -->|Да| F{x == 0?}
-    F -->|Да| G[Возврат ошибки: 'Division by zero in cos(π/(2x))']
-    F -->|Нет| H["result = cos(π/(2x))<br>condition = '|x| < 1 → y = cos(π/(2x))'"]
+    C -->|Да| D[result = x² - 1<br>condition = x ≤ -1 → y = x² - 1]
+    C -->|Нет| E[abs x < 1?]
+    E -->|Да| F{x = 0?}
+    F -->|Да| G[Возврат ошибки: Division by zero in cos pi/2x]
+    F -->|Нет| H[result = cos pi/2x<br>condition = abs x < 1 → y = cos pi/2x]
     E -->|Нет| I{x ≥ 1?}
-    I -->|Да| J["result = 0<br>condition = 'x ≥ 1 → y = 0'"]
-    I -->|Нет| K[Возврат ошибки: 'Unhandled case']
-    
+    I -->|Да| J[result = 0<br>condition = x ≥ 1 → y = 0]
+    I -->|Нет| K[Возврат ошибки: Unhandled case]
+
     D --> L[Возврат: result, condition, None]
     H --> L
     J --> L
-    
-    G --> M["Возврат: None, '', 'Error: Division by zero...'"]
-    K --> N["Возврат: None, 'Error: Unhandled case', ''"]
-    
+
+    G --> M[Возврат: None, empty, Error Division by zero]
+    K --> N[Возврат: None, Error Unhandled case, empty]
+
     L --> O[Конец]
     M --> O
     N --> O
-    
+
     style A fill:#2ecc71
     style O fill:#e74c3c
     style C fill:#3498db
@@ -192,10 +192,10 @@ flowchart TD
 flowchart TD
     A[Начало Exercise_1<br>Control 2] --> B[Ввод a, b, h]
     B --> C{h ≤ 0?}
-    C -->|Да| D[Возврат ошибки: "Step h must be positive"]
+    C -->|Да| D[Возврат ошибки: Step h must be positive]
     C -->|Нет| E{a > b?}
-    E -->|Да| F[Возврат ошибки: "a must be <= b"]
-    E -->|Нет| G[Инициализация: results = []<br>x = a]
+    E -->|Да| F[Возврат ошибки: a must be <= b]
+    E -->|Нет| G[Инициализация: results = ... <br>x = a]
     G --> H{x ≤ b?}
     H -->|Нет| I[Возврат results, None]
     H -->|Да| J{x ≤ -1?}
@@ -251,10 +251,10 @@ flowchart TD
 flowchart TD
     A[Начало Exercise_2<br>Control 2] --> B[Ввод a, b, h]
     B --> C{h ≤ 0?}
-    C -->|Да| D[Возврат ошибки: "Step h must be positive"]
+    C -->|Да| D[Возврат ошибки: Step h must be positive]
     C -->|Нет| E{a > b?}
-    E -->|Да| F[Возврат ошибки: "a must be <= b"]
-    E -->|Нет| G[Инициализация: results = []<br>x = a]
+    E -->|Да| F[Возврат ошибки: a must be <= b]
+    E -->|Нет| G[Инициализация: results = ...<br>x = a]
     G --> H{x ≤ b?}
     H -->|Нет| I[Возврат results, None]
     H -->|Да| J{x ≤ 0?}
@@ -312,10 +312,10 @@ flowchart TD
 flowchart TD
     A[Начало Exercise_3<br>Control 2] --> B[Ввод a, b, h]
     B --> C{h ≤ 0?}
-    C -->|Да| D[Возврат ошибки: "Step h must be positive"]
+    C -->|Да| D[Возврат ошибки: Step h must be positive]
     C -->|Нет| E{a > b?}
-    E -->|Да| F[Возврат ошибки: "a must be <= b"]
-    E -->|Нет| G[Инициализация: results = []<br>x = a]
+    E -->|Да| F[Возврат ошибки: a must be <= b]
+    E -->|Нет| G[Инициализация: results = ...<br>x = a]
     G --> H{x ≤ b?}
     H -->|Нет| I[Возврат results, None]
     H -->|Да| J{"x < -π/2?"}
@@ -374,7 +374,7 @@ flowchart TD
 flowchart TD
     A[Начало Exercise_1<br>Control 3] --> B["Ввод x, n<br>default: x = π/8, n = 10"]
     B --> C{n < 2?}
-    C -->|Да| D[Возврат ошибки: "n must be >= 2"]
+    C -->|Да| D[Возврат ошибки: n must be >= 2]
     C -->|Нет| E["Инициализация:<br>total = 0.0<br>cos_x = cosx<br>factorial = 1"]
     E --> F[Цикл for k от 1 до n]
     F --> G[factorial = factorial * k]
@@ -417,11 +417,11 @@ flowchart TD
 flowchart TD
     A[Начало] --> B[Ввод sequence, p]
     B --> C{sequence не список?}
-    C -->|Да| D[Возврат ошибки: "Sequence must be a list"]
-    C -->|Нет| E{len(sequence) == 0?}
+    C -->|Да| D[Возврат ошибки: Sequence must be a list]
+    C -->|Нет| E{len sequence == 0?}
     E -->|Да| F[Возврат 0.0, None]
-    E -->|Нет| G{len(sequence) > 20?}
-    G -->|Да| H[Возврат ошибки: "Sequence length must be ≤ 20"]
+    E -->|Нет| G{len sequence > 20?}
+    G -->|Да| H[Возврат ошибки: Sequence length must be ≤ 20]
     G -->|Нет| I["Инициализация total = 0<br>Проход по элементам sequence"]
     I --> J[Для каждого x в sequence]
     J --> K{x > p?}
@@ -469,24 +469,24 @@ flowchart TD
 flowchart TD
     A[Начало Exercise_3<br>Control 3] --> B[Ввод matrix<br>матрица 5×4]
     B --> C{"matrix пуста<br>или rows ≠ 5?"}
-    C -->|Да| D[Возврат ошибки: "Matrix must have exactly 5 rows"]
+    C -->|Да| D[Возврат ошибки: Matrix must have exactly 5 rows]
     C -->|Нет| E[Проверить каждую строку]
     E --> F[Для каждой строки в matrix]
-    F --> G{len(строки) ≠ 4?}
-    G -->|Да| H[Возврат ошибки: "Each row must have exactly 4 elements"]
+    F --> G{len строки ≠ 4?}
+    G -->|Да| H[Возврат ошибки: Each row must have exactly 4 elements]
     G -->|Нет| I[Следующая строка]
     I --> J{Все строки проверены?}
     J -->|Нет| F
-    J -->|Да| K[Инициализация: row_sums = []]
+    J -->|Да| K[Инициализация: row_sums = ...]
     K --> L[Для каждой строки в matrix]
-    L --> M[Вычисление sum(строка)]
+    L --> M[Вычисление sum строка ]
     M --> N[Добавить сумму в row_sums]
     N --> O[Следующая строка]
     O --> P{Все строки обработаны?}
     P -->|Нет| L
     P -->|Да| Q["Найти min_sum = min(row_sums)"]
     Q --> R["Найти min_index = index(min_sum) + 1"]
-    R --> S[Возврат (min_index, min_sum), None]
+    R --> S[Возврат min_index, min_sum, None]
     
     D --> T[Возврат None, error]
     H --> T
