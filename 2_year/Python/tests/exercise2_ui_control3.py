@@ -1,7 +1,7 @@
 # exercise2_ui_control3.py
 
 import curses
-import time
+from typing import List
 from core import Control3
 
 def draw_formula(stdscr, h, w):
@@ -10,10 +10,10 @@ def draw_formula(stdscr, h, w):
 
     formula_lines = [
         "╔══════════════════════════════════════════════════╗",
-        "║            POLYNOMIAL DERIVATIVE                 ║",
-        "║   P(x) = a₀ + a₁x + a₂x² + ... + aₙxⁿ             ║",
-        "║   P'(x) = a₁ + 2a₂x + 3a₃x² + ... + n·aₙxⁿ⁻¹      ║",
-        "║   Enter coefficients [a₀, a₁, ..., aₙ]           ║",
+        "║        SUM OF ELEMENTS GREATER THAN P            ║",
+        "║   Given: x₁, x₂, ..., xₙ  (n ≤ 20)               ║",
+        "║   Compute: Σ xᵢ  for all xᵢ > p                  ║",
+        "║   Enter sequence and threshold p                 ║",
         "╚══════════════════════════════════════════════════╝"
     ]
 
@@ -23,27 +23,36 @@ def draw_formula(stdscr, h, w):
         stdscr.addstr(start_y + i, x, line, title_color if i == 1 else text_color)
 
 
-def draw_input_field(stdscr, coeffs_str, is_editing, h, w):
+def draw_input_fields(stdscr, seq_str: str, p_str: str, active_field: str, h, w):
     text_color = curses.color_pair(2)
     edit_color = curses.color_pair(3)
 
-    label = "Coeffs: "
-    full_line = label + coeffs_str
-    y = h // 2 + 6
-    x = (w // 2) - len(full_line) // 2
-    color = edit_color if is_editing else text_color
-    stdscr.addstr(y, x, full_line, color)
+    # Sequence input
+    seq_label = "Sequence: "
+    seq_line = seq_label + seq_str
+    y_seq = h // 2 + 6
+    x_seq = (w // 2) - len(seq_line) // 2
+    seq_col = edit_color if active_field == 'seq' else text_color
+    stdscr.addstr(y_seq, x_seq, seq_line, seq_col)
+
+    # Threshold p input
+    p_label = "p = "
+    p_line = p_label + p_str
+    y_p = h // 2 + 8
+    x_p = (w // 2) - len(p_line) // 2
+    p_col = edit_color if active_field == 'p' else text_color
+    stdscr.addstr(y_p, x_p, p_line, p_col)
 
 
 def draw_calc_button(stdscr, h, w, is_highlighted=False):
     calc_color = curses.color_pair(3) if is_highlighted else curses.color_pair(2)
     calc_line = "► CALC ◄"
-    y = h // 2 + 9
+    y = h // 2 + 11
     x = (w // 2) - len(calc_line) // 2
     stdscr.addstr(y, x, calc_line, calc_color)
 
 
-def display_derivative(stdscr, orig, deriv, h, w):
+def display_result(stdscr, sequence: List[float], p: float, total: float, h, w):
     title_color = curses.color_pair(1)
     text_color = curses.color_pair(2)
     header_color = curses.color_pair(3)
@@ -52,16 +61,16 @@ def display_derivative(stdscr, orig, deriv, h, w):
 
     header = "╔════════════════════════════════════════════╗"
     stdscr.addstr(1, (w // 2) - len(header) // 2, header, title_color)
-    title = "║           DERIVATIVE COEFFICIENTS          ║"
+    title = "║             COMPUTATION RESULT             ║"
     stdscr.addstr(2, (w // 2) - len(title) // 2, title, title_color)
     sep = "╠════════════════════════════════════════════╣"
     stdscr.addstr(3, (w // 2) - len(sep) // 2, sep, title_color)
 
-    orig_str = "P(x):  [" + ", ".join(f"{c:.3f}" for c in orig) + "]"
-    deriv_str = "P'(x): [" + ", ".join(f"{c:.3f}" for c in deriv) + "]"
+    seq_str = "[" + ", ".join(f"{x:.3f}" for x in sequence) + "]"
+    result_str = f"Sum of x > {p:.3f} = {total:.3f}"
 
-    stdscr.addstr(5, (w // 2) - len(orig_str) // 2, orig_str, text_color)
-    stdscr.addstr(6, (w // 2) - len(deriv_str) // 2, deriv_str, header_color)
+    stdscr.addstr(5, (w // 2) - len(seq_str) // 2, seq_str, text_color)
+    stdscr.addstr(6, (w // 2) - len(result_str) // 2, result_str, header_color)
 
     footer = "╚════════════════════════════════════════════╝"
     stdscr.addstr(8, (w // 2) - len(footer) // 2, footer, title_color)
@@ -72,7 +81,7 @@ def display_derivative(stdscr, orig, deriv, h, w):
     stdscr.getch()
 
 
-def parse_coeff_string(s):
+def parse_float_list(s: str) -> List[float]:
     s = s.strip()
     if not s:
         return []
@@ -94,92 +103,110 @@ def run_exercise2_ui_control3(stdscr, control_obj):
         curses.init_pair(3, curses.COLOR_BLACK, curses.COLOR_WHITE)
         curses.init_pair(4, curses.COLOR_RED, curses.COLOR_BLACK)
 
-    coeffs_str = "1, 0, -2, 3"  # Пример: 1 - 2x² + 3x³
-    is_editing = False
+    seq_str = "1.5, -2, 3.7, 0"
+    p_str = "0.5"
+    active_field = None  # 'seq' or 'p'
     error_str = ""
     calc_highlighted = False
 
     while True:
         stdscr.clear()
         draw_formula(stdscr, h, w)
-        draw_input_field(stdscr, coeffs_str, is_editing, h, w)
+        draw_input_fields(stdscr, seq_str, p_str, active_field, h, w)
         draw_calc_button(stdscr, h, w, calc_highlighted)
 
         if error_str:
             stdscr.addstr(h - 4, (w // 2) - len(error_str) // 2, error_str, curses.color_pair(4))
 
-        instructions = "E to edit, ENTER to confirm, C to CALC, ESC to exit"
+        instructions = "E/S to edit Seq, E/P to edit p, C to CALC, ESC to exit"
         stdscr.addstr(h - 2, (w // 2) - len(instructions) // 2, instructions, curses.color_pair(2))
         stdscr.refresh()
 
         key = stdscr.getch()
 
-        if key == 27:
+        if key == 27:  # ESC
             break
-        elif key == ord('e') or key == ord('E'):
-            is_editing = True
-            # Показать курсор
+
+        elif key in [ord('s'), ord('S')]:
+            active_field = 'seq'
             curses.curs_set(1)
-            # Открываем ввод строки
             y = h // 2 + 6
-            x_start = (w // 2) - len("Coeffs: " + coeffs_str) // 2 + len("Coeffs: ")
-            stdscr.move(y, x_start + len(coeffs_str))
-            stdscr.refresh()
-
-            new_str = ""
-            cursor = len(coeffs_str)
-            temp_str = coeffs_str
-
-            while True:
-                stdscr.addstr(y, x_start, temp_str + " " * 20, curses.color_pair(3))
-                stdscr.move(y, x_start + cursor)
-                stdscr.refresh()
-
-                k = stdscr.getch()
-                if k == 27:
-                    break
-                elif k in [10, 13]:
-                    coeffs_str = temp_str
-                    break
-                elif k == curses.KEY_LEFT and cursor > 0:
-                    cursor -= 1
-                elif k == curses.KEY_RIGHT and cursor < len(temp_str):
-                    cursor += 1
-                elif k in [curses.KEY_BACKSPACE, 127, 8]:
-                    if cursor > 0:
-                        temp_str = temp_str[:cursor-1] + temp_str[cursor:]
-                        cursor -= 1
-                elif k == curses.KEY_DC and cursor < len(temp_str):
-                    temp_str = temp_str[:cursor] + temp_str[cursor+1:]
-                elif 32 <= k <= 126:  # printable chars
-                    if len(temp_str) < 60:
-                        temp_str = temp_str[:cursor] + chr(k) + temp_str[cursor:]
-                        cursor += 1
-
-            is_editing = False
+            label_len = len("Sequence: ")
+            x_start = (w // 2) - len("Sequence: " + seq_str) // 2 + label_len
+            _edit_string(stdscr, y, x_start, seq_str, lambda s: setattr(run_exercise2_ui_control3, '_temp_seq', s))
+            seq_str = getattr(run_exercise2_ui_control3, '_temp_seq', seq_str)
+            active_field = None
             curses.curs_set(0)
+
+        elif key in [ord('p'), ord('P')]:
+            active_field = 'p'
+            curses.curs_set(1)
+            y = h // 2 + 8
+            label_len = len("p = ")
+            x_start = (w // 2) - len("p = " + p_str) // 2 + label_len
+            _edit_string(stdscr, y, x_start, p_str, lambda s: setattr(run_exercise2_ui_control3, '_temp_p', s))
+            p_str = getattr(run_exercise2_ui_control3, '_temp_p', p_str)
+            active_field = None
+            curses.curs_set(0)
+
         elif key in [ord('c'), ord('C')]:
             calc_highlighted = True
             stdscr.refresh()
             curses.napms(100)
+            error_str = ""
 
             try:
-                coeffs = parse_coeff_string(coeffs_str)
-                if not coeffs:
-                    error_str = "Error: Enter at least one coefficient"
+                sequence = parse_float_list(seq_str)
+                p_val = float(p_str.strip())
+
+                if len(sequence) == 0:
+                    error_str = "Error: Sequence cannot be empty"
+                elif len(sequence) > 20:
+                    error_str = "Error: Max 20 elements allowed"
                 else:
-                    deriv, error = control_obj.exercise_2(coeffs)
-                    if error:
-                        error_str = error
+                    total, err = control_obj.exercise_2(sequence, p_val)
+                    if err:
+                        error_str = err
                     else:
-                        error_str = ""
-                        display_derivative(stdscr, coeffs, deriv, h, w)
+                        display_result(stdscr, sequence, p_val, total, h, w)
 
             except ValueError:
-                error_str = "Error: Invalid number format (use: 1, -2.5, 3)"
+                error_str = "Error: Invalid number format"
             except Exception as e:
                 error_str = f"Error: {str(e)}"
 
             calc_highlighted = False
 
     curses.curs_set(1)
+
+
+def _edit_string(stdscr, y: int, x_start: int, initial: str, save_callback):
+    """Вспомогательная функция для редактирования строки."""
+    temp_str = initial
+    cursor = len(temp_str)
+
+    while True:
+        stdscr.addstr(y, x_start, temp_str + " " * 30, curses.color_pair(3))
+        stdscr.move(y, x_start + cursor)
+        stdscr.refresh()
+
+        k = stdscr.getch()
+        if k == 27:  # ESC — отмена
+            break
+        elif k in [10, 13]:  # ENTER — сохранить
+            save_callback(temp_str)
+            break
+        elif k == curses.KEY_LEFT and cursor > 0:
+            cursor -= 1
+        elif k == curses.KEY_RIGHT and cursor < len(temp_str):
+            cursor += 1
+        elif k in [curses.KEY_BACKSPACE, 127, 8]:
+            if cursor > 0:
+                temp_str = temp_str[:cursor-1] + temp_str[cursor:]
+                cursor -= 1
+        elif k == curses.KEY_DC and cursor < len(temp_str):
+            temp_str = temp_str[:cursor] + temp_str[cursor+1:]
+        elif 32 <= k <= 126:
+            if len(temp_str) < 60:
+                temp_str = temp_str[:cursor] + chr(k) + temp_str[cursor:]
+                cursor += 1

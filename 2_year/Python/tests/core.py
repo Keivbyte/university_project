@@ -20,12 +20,7 @@ class Control1:
             if denominator_sqrt == 0:
                 return None, "Error: Denominator is zero (x and y are both zero)"
 
-            bracket_term = (
-                a * x**2 +
-                (a / b) * x**2 * y -
-                (b / a) * x * y**2 +
-                b * y**2
-            )
+            bracket_term = ( a * x**2 + (a / b) * x**2 * y - (b / a) * x * y**2 +  b * y**2 )
 
             result = (numerator_cbrt / denominator_sqrt) * bracket_term
             return result, None
@@ -215,25 +210,24 @@ class Control3:
         except Exception as e:
             return None, f"Error: {str(e)}"
 
-    def exercise_2(self, coeffs: List[float]) -> Tuple[Optional[List[float]], Optional[str]]:
+    def exercise_2(self, sequence: List[float], p: float) -> Tuple[Optional[float], Optional[str]]:
         """
-        Находит коэффициенты производной полинома P'(x),
-        где coeffs = [a0, a1, a2, ..., an] для P(x) = a0 + a1*x + a2*x² + ... + an*xⁿ
-        Возвращает коэффициенты Q(x) = P'(x): [a1, 2*a2, 3*a3, ..., n*an]
+        Вычисляет сумму элементов последовательности, для которых x > p.
+        sequence: список чисел [x1, x2, ..., xn], n <= 20
+        p: пороговое значение
+        Возвращает: (сумма, None) или (None, сообщение об ошибке)
         """
         try:
-            if not isinstance(coeffs, list) or len(coeffs) == 0:
-                return None, "Error: Coefficients list is empty or invalid"
+            if not isinstance(sequence, list):
+                return None, "Error: Sequence must be a list"
+            if len(sequence) == 0:
+                return 0.0, None
+            if len(sequence) > 20:
+                return None, "Error: Sequence length must be ≤ 20"
 
-            if len(coeffs) == 1:
-                # Производная константы — 0
-                return [0.0], None
+            total = sum(x for x in sequence if x > p)
+            return total, None
 
-            derivative = []
-            for i in range(1, len(coeffs)):
-                derivative.append(i * coeffs[i])
-
-            return derivative, None
         except Exception as e:
             return None, f"Error: {str(e)}"
 
