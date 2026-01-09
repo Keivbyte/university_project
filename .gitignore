@@ -30,3 +30,69 @@ node_modules/
 venv/
 __pycache__/
 .idea
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vcxproj.filters
+*.vcxproj.user
+
+# Visual Studio 2015+ cache/options
+.vs/
+.ipch/
+*.VC.db
+*.VC.VC.db
+*.sdf
+*.opensdf
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings
+
+# MSBuild
+*.msbuild.log
+*.msbuild.binlog
+
+# NuGet
+packages/
+!packages/**/packages.config
+
+# C++ specific
+*.ilk
+*.manifest
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tlh
+*.tli
+*.tmp_proj
+*.log
+*.dll
+*.exe
+*.lib
+*.exp
+*.idb
+*.pdb
+*.ipdb
+*.iobj
