@@ -63,22 +63,22 @@ graph TD
 4. Процесс повторяется для оставшейся неотсортированной части
 
 #### Визуализация алгоритма
-![Визуализация сортировки выбором](img/sort_visual.gif)
+![Визуализация сортировки выбором](img/sort_visoual.gif)
 
 #### Блок-схема алгоритма сортировки
 ```mermaid
 graph TD
     A[Начало SelectionSort] --> B[i = 0]
-    B --> C{i < N-1?}
+    B --> C{i меньше N-1?}
     C -->|Да| D[minIndex = i]
     D --> E[j = i+1]
-    E --> F{j < N?}
-    F -->|Да| G{Arr[j] < Arr[minIndex]?}
+    E --> F{j меньше N?}
+    F -->|Да| G{Arr[j] меньше Arr[minIndex]?}
     G -->|Да| H[minIndex = j]
     H --> I[Увеличить j]
     G -->|Нет| I
     I --> F
-    F -->|Нет| J{minIndex != i?}
+    F -->|Нет| J{minIndex не равно i?}
     J -->|Да| K[Поменять местами Arr[i] и Arr[minIndex]]
     K --> L[Увеличить i]
     J -->|Нет| L
