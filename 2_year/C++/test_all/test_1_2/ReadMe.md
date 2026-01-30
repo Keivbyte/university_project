@@ -68,22 +68,22 @@ graph TD
 #### Блок-схема алгоритма сортировки
 ```mermaid
 graph TD
-    A[Начало SelectionSort] --> B[i = 0]
-    B --> C{i меньше N-1?}
-    C -->|Да| D[minIndex = i]
-    D --> E[j = i+1]
-    E --> F{j меньше N?}
-    F -->|Да| G{Arr[j] меньше Arr[minIndex]?}
-    G -->|Да| H[minIndex = j]
-    H --> I[Увеличить j]
-    G -->|Нет| I
+    A --> B
+    B --> C{i?}
+    C --> D
+    D --> E
+    E --> F{j?}
+    F --> G{compare}
+    G --> H[update]
+    H --> I[next j]
+    G --> I
     I --> F
-    F -->|Нет| J{minIndex не равно i?}
-    J -->|Да| K[Поменять местами Arr[i] и Arr[minIndex]]
-    K --> L[Увеличить i]
-    J -->|Нет| L
+    F --> J{changed?}
+    J --> K[swap]
+    K --> L[next i]
+    J --> L
     L --> C
-    C -->|Нет| M[Конец]
+    C --> M[end]
 ```
 
 #### Пример работы программы
@@ -123,7 +123,7 @@ graph TD
 4. Разделение текста на слова с учетом пунктуации
 
 #### Пример работы программы
-![Демонстрация поиска слов](img/kr2.gif)
+![Демонстрация поиска слов](img/control2.gif)
 
 ---
 
