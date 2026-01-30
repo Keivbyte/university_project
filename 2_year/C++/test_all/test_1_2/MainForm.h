@@ -589,21 +589,6 @@ namespace test1 {
 			}
 		}
 	}
-	
-	private: System::Void SelectionSort(int Arr[], int Start, int N) {
-		for (int i = Start; i < N - 1; i++) {
-			int minIndex = i;
-			for (int j = i + 1; j < N; j++) {
-				if (Arr[j] < Arr[minIndex]) {
-					minIndex = j;
-				}
-			}
-	
-			if (minIndex != i) {
-				Swap(&Arr[i], &Arr[minIndex]);
-			}
-		}
-	}
 
 	private: System::Void btn_clear_Click(System::Object^ sender, System::EventArgs^ e) {
 		dgv_arr_source->Columns->Clear();
