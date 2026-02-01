@@ -1,3 +1,5 @@
+// KineticAnalyzer.cpp
+
 #include "KineticAnalyzer.h"
 #include "regression_analysis.h"
 #include <stdexcept>
