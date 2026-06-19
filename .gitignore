@@ -96,3 +96,6 @@ packages/
 *.pdb
 *.ipdb
 *.iobj
+
+# BUT leave CMakeLists.txt (an exception to the rule above)
+!CMakeLists.txt
