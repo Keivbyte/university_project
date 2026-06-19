@@ -1,33 +1,47 @@
 #include "window.h"
+#include <stdexcept>
 
 Window::~Window() {
-    DestroyWindow(m_hwnd_);
-    UnregisterClassW(L"MyEngineWindowClass", GetModuleHandle(nullptr));
+    if (m_hwnd) {
+        DestroyWindow(m_hwnd);
+    }
 }
 
 Window::Window(int width, int height, const std::wstring& title) {
-    const wchar_t* className = L"MyEngineWindowClass";
-    WNDCLASSEXW wc = {};
+    static bool s_classRegistered = false;
 
-    wc.cbSize = sizeof(WNDCLASSEXW);
-    wc.hInstance = GetModuleHandle(nullptr);
-    wc.lpszClassName = className;
-    wc.lpfnWndProc = Window::WndProc;
+    if (!s_classRegistered) {
+        WNDCLASSEXW wc = {};
+        wc.cbSize = sizeof(WNDCLASSEXW);
+        wc.hInstance = GetModuleHandleW(nullptr);
+        wc.lpszClassName = CLASS_NAME;
+        wc.lpfnWndProc = Window::WndProc;
 
-    RegisterClassExW(&wc);
+        if (!RegisterClassExW(&wc)) {
+            throw std::runtime_error("Failed to register window class!");
+        }
+        s_classRegistered = true;
+    }
 
     RECT rect = { 0, 0, width, height };
     AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, FALSE, 0);
 
-    m_hwnd_ = CreateWindowExW( 0, className, title.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-            rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, wc.hInstance, this );
+    m_hwnd = CreateWindowExW(
+        0, CLASS_NAME, title.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+        rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr,
+        GetModuleHandleW(nullptr), this
+    );
 
-    ShowWindow(m_hwnd_, SW_SHOW);
+    if (!m_hwnd) {
+        throw std::runtime_error("Failed to create window!");
+    }
+
+    ShowWindow(m_hwnd, SW_SHOW);
 }
 
-bool Window::ShouldClose() const { return m_shouldClose_; }
+bool Window::ShouldClose() const noexcept { return m_shouldClose; }
 
-HWND Window::GetHandle() const { return m_hwnd_; }
+HWND Window::GetHandle() const noexcept { return m_hwnd; }
 
 void Window::PumpMessages() {
     MSG msg = {};
@@ -49,13 +63,9 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
     }
 
     if (window) {
-        switch (msg) {
-            case WM_CLOSE:
-                window->m_shouldClose_ = true;
-                return 0;
-            case WM_DESTROY:
-                PostQuitMessage(0);
-                return 0;
+        if (msg == WM_CLOSE) {
+            window->m_shouldClose = true;
+            return 0;
         }
     }
 
