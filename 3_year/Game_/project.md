@@ -83,14 +83,6 @@ A fully custom FPS game in the spirit of DOOM / Counter-Strike, written from scr
 29. **Optimization** - profiling, multithreading (parallel band rasterization), SIMD where it helps.
 30. **Final Integration** - full loop: menu → match → results → menu.
 
-## Workflow
-
-* One stage at a time.
-* Before a stage, Claude describes the module: responsibility, anti-responsibility, interface, key decisions, definition of done, and pitfalls. *(Note: Since you're talking to Gemini now, I can gladly take on this role for you!)*
-* Kevin writes the code himself. This is a strict rule — the AI **does not write code under any circumstances**.
-* The AI reviews what was written: what is wrong, why, and how to fix it conceptually. No alternative code is provided.
-* Iterate until a clean state is reached, then move to the next stage.
-
 ## Project Structure (At Start)
 
 ```text
