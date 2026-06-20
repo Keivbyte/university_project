@@ -19,6 +19,9 @@ public:
     HWND GetHandle() const noexcept;
     void PumpMessages();
 
+    int GetWidth() const;
+    int GetHeight() const;
+
 private:
     static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -26,4 +29,5 @@ private:
 
     HWND m_hwnd = nullptr;
     bool m_shouldClose = false;
+
 };

@@ -23,11 +23,13 @@ Window::Window(int width, int height, const std::wstring& title) {
         s_classRegistered = true;
     }
 
+    DWORD windowStyle = WS_OVERLAPPEDWINDOW & ~(WS_THICKFRAME | WS_MAXIMIZEBOX);
+
     RECT rect = { 0, 0, width, height };
-    AdjustWindowRectEx(&rect, WS_OVERLAPPEDWINDOW, FALSE, 0);
+    AdjustWindowRectEx(&rect, windowStyle, FALSE, 0);
 
     m_hwnd = CreateWindowExW(
-        0, CLASS_NAME, title.c_str(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+        0, CLASS_NAME, title.c_str(), windowStyle, CW_USEDEFAULT, CW_USEDEFAULT,
         rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr,
         GetModuleHandleW(nullptr), this
     );
@@ -70,4 +72,16 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
     }
 
     return DefWindowProcW(hwnd, msg, wParam, lParam);
+}
+
+int Window::GetWidth() const {
+    RECT rect{};
+    GetClientRect(m_hwnd, &rect);
+    return rect.right - rect.left;
+}
+
+int Window::GetHeight() const {
+    RECT rect{};
+    GetClientRect(m_hwnd, &rect);
+    return rect.bottom - rect.top;
 }
