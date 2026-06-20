@@ -16,6 +16,7 @@ Window::Window(int width, int height, const std::wstring& title) {
         wc.hInstance = GetModuleHandleW(nullptr);
         wc.lpszClassName = CLASS_NAME;
         wc.lpfnWndProc = Window::WndProc;
+        wc.hCursor = LoadCursorW(nullptr, (LPCWSTR)IDC_ARROW);
 
         if (!RegisterClassExW(&wc)) {
             throw std::runtime_error("Failed to register window class!");
@@ -67,6 +68,15 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
     if (window) {
         if (msg == WM_CLOSE) {
             window->m_shouldClose = true;
+            return 0;
+        }
+        if (msg == WM_ERASEBKGND) {
+            return 1;
+        }
+        if (msg == WM_PAINT) {
+            PAINTSTRUCT ps;
+            BeginPaint(hwnd, &ps);
+            EndPaint(hwnd, &ps);
             return 0;
         }
     }
