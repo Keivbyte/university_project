@@ -1,8 +1,5 @@
 #pragma once
 
-#define WIN32_LEAN_AND_MEAN
-#define NOMINMAX
-
 #include <windows.h>
 #include <string>
 
@@ -11,7 +8,6 @@ public:
     Window(int width, int height, const std::wstring& title);
     ~Window();
 
-    // Запрет копирования
     Window(const Window&) = delete;
     Window& operator=(const Window&) = delete;
 
@@ -29,5 +25,4 @@ private:
 
     HWND m_hwnd = nullptr;
     bool m_shouldClose = false;
-
 };
