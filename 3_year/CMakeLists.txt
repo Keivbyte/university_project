@@ -12,6 +12,8 @@ add_executable(3_year
         Game_/src/platform/window.h
         Game_/src/platform/framebuffer.h
         Game_/src/platform/framebuffer.cpp
+        Game_/src/platform/timer.h
+        Game_/src/platform/timer.cpp
 )
 
 target_include_directories(3_year PRIVATE Game_/src)

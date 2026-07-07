@@ -1,21 +1,39 @@
 #include "platform/window.h"
 #include "platform/framebuffer.h"
+#include "platform/timer.h"
 #include <iostream>
+#include <string>
 
 int main() {
     try {
         Window window(1280, 800, L"Game");
         Framebuffer fb(320, 200);
-        
-        fb.Clear(0xFFFF0000);
+        Timer timer;
 
+        fb.Clear(0xFFFF0000);
         fb.SetPixel(160, 100, 0xFF0000FF);
-        fb.SetPixel(161, 100, 0xFF0000FF);
-        fb.SetPixel(160, 101, 0xFF0000FF);
-        fb.SetPixel(161, 101, 0xFF0000FF);
+
+        double fpsDisplayTimer = 0.0;
 
         while (!window.ShouldClose()) {
             window.PumpMessages();
+
+            // 1. Считаем время
+            double dt = timer.Tick();
+
+            // 2. Обновляем логику (пока пустая, но dt уже готов!)
+            // Update(dt);
+
+            // 3. Выводим FPS в заголовок окна 2 раза в секунду
+            fpsDisplayTimer += dt;
+            if (fpsDisplayTimer >= 0.5) {
+                std::wstring title = L"Game | FPS: " + std::to_wstring(static_cast<int>(timer.FPS()));
+                SetWindowTextW(window.GetHandle(), title.c_str());
+                fpsDisplayTimer = 0.0;
+            }
+
+            // 4. Рендер (Clear, отрисовка, Present)
+            // fb.Clear(0xFF000000);
 
             HDC hdc = GetDC(window.GetHandle());
             if (hdc) {
@@ -23,9 +41,6 @@ int main() {
                 ReleaseDC(window.GetHandle(), hdc);
             }
 
-            // Заглушка для ограничения кадров.
-            // TODO: Заменить на цикл с QueryPerformanceCounter для точного тайминга!!!
-            Sleep(16);
         }
     }
     catch (const std::exception& e) {
