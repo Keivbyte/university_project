@@ -13,9 +13,14 @@ void Framebuffer::Resize(int width, int height) {
     size_y_ = height;
     argb_.resize(width * height);
     InitBitMapInfo();
+    Clear(0);
 }
 
 uint32_t* Framebuffer::Data() noexcept {
+    return argb_.data();
+}
+
+const uint32_t* Framebuffer::Data() const noexcept {
     return argb_.data();
 }
 

@@ -23,7 +23,9 @@ int main() {
                 ReleaseDC(window.GetHandle(), hdc);
             }
 
-            Sleep(16); 
+            // Заглушка для ограничения кадров.
+            // TODO: Заменить на цикл с QueryPerformanceCounter для точного тайминга!!!
+            Sleep(16);
         }
     }
     catch (const std::exception& e) {
