@@ -1,4 +1,5 @@
 #include "window.h"
+#include "input.h"
 #include <stdexcept>
 
 Window::~Window() {
@@ -44,6 +45,8 @@ Window::Window(int width, int height, const std::wstring& title) {
 
 bool Window::ShouldClose() const noexcept { return m_shouldClose; }
 
+void Window::SetInput(Input* input) noexcept { m_input = input; }
+
 HWND Window::GetHandle() const noexcept { return m_hwnd; }
 
 void Window::PumpMessages() {
@@ -66,6 +69,13 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
     }
 
     if (window) {
+        // Feed the input accumulator first. OnMessage never consumes a message
+        // and never calls DefWindowProc, so WM_SYSKEYDOWN / WM_SYSKEYUP still
+        // fall through to DefWindowProcW below and Alt+F4 keeps working.
+        if (window->m_input) {
+            window->m_input->OnMessage(msg, wParam, lParam);
+        }
+
         if (msg == WM_CLOSE) {
             window->m_shouldClose = true;
             return 0;

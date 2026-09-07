@@ -12,6 +12,8 @@ add_executable(3_year
         Game_/src/client/platform/window.h
         Game_/src/client/platform/framebuffer.h
         Game_/src/client/platform/framebuffer.cpp
+        Game_/src/client/platform/input.h
+        Game_/src/client/platform/input.cpp
         Game_/src/shared/time/timer.h
         Game_/src/shared/time/timer.cpp
         Game_/src/shared/net/socket.h

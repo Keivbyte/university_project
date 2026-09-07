@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <string>
 
+class Input;
+
 class Window {
 public:
     /*
@@ -45,6 +47,15 @@ public:
     void PumpMessages();
 
     /*
+     * @func  SetInput
+     * @desc  Attaches an Input instance. While set, WndProc forwards every
+     *        message to Input::OnMessage before doing its own handling. Pass
+     *        nullptr to detach. The Window does not own the Input.
+     * @param input: pointer to the Input state accumulator, or nullptr
+     */
+    void SetInput(Input* input) noexcept;
+
+    /*
      * @func  GetWidth
      * @desc  Retrieves the current width of the window's client area.
      * @return Width in pixels.
@@ -73,6 +84,7 @@ private:
 
     static constexpr const wchar_t* CLASS_NAME = L"MyEngineWindowClass";
 
-    HWND m_hwnd = nullptr;
-    bool m_shouldClose = false;
+    HWND   m_hwnd = nullptr;
+    bool   m_shouldClose = false;
+    Input* m_input = nullptr;   // not owned; forwarded to in WndProc
 };
