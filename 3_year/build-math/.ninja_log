@@ -1,0 +1,26 @@
+# ninja log v6
+2182	2334	8105139617619485	math_tests_release.exe	8250982c14569fa5
+8	91	8105139595877620	CMakeFiles/3_year.dir/Game_/src/server/app/server_main.cpp.obj	63fbfec33daaf99c
+6	1499	8105139595857616	CMakeFiles/3_year.dir/Game_/src/client/platform/input.cpp.obj	ddd9f478fcfd3ae0
+4	1746	8105139595837611	CMakeFiles/3_year.dir/Game_/src/client/platform/window.cpp.obj	d477caa84c1aa1ed
+10	2181	8105139595897612	CMakeFiles/math_tests_release.dir/Game_/tests/math_tests.cpp.obj	ec54f0c1777fc627
+9	2233	8105139595887630	CMakeFiles/math_tests_debug.dir/Game_/tests/math_tests.cpp.obj	4c83f3bdd2c9dc2d
+7	1848	8105139595867633	CMakeFiles/3_year.dir/Game_/src/shared/time/timer.cpp.obj	8fe08f8b767eebfb
+5	2003	8105139595847638	CMakeFiles/3_year.dir/Game_/src/client/platform/framebuffer.cpp.obj	b3e93f24d8661a73
+2233	2336	8105139618132310	math_tests_debug.exe	17e8d9a19b674544
+2	3214	8105139595817603	CMakeFiles/3_year.dir/Game_/src/client/main.cpp.obj	4c1401f483e36800
+3214	3371	8105139627941667	3_year.exe	2e0c8fb8ff5a1ef3
+3	383	8105140450020117	build.ninja	e74b8dbd80c1375a
+3	383	8105140450020117	C:/Users/user/Desktop/Keivbyte/university/3_year/build-math/cmake_install.cmake	e74b8dbd80c1375a
+3	383	8105140450020117	C:/Users/user/Desktop/Keivbyte/university/3_year/build-math/CTestTestfile.cmake	e74b8dbd80c1375a
+49	150	8105140450665210	CMakeFiles/3_year.dir/Game_/src/server/app/server_main.cpp.obj	2a59e5da01441a71
+47	1987	8105140450645205	CMakeFiles/3_year.dir/Game_/src/client/platform/input.cpp.obj	6e341bf77e5cfd6
+46	2151	8105140450625196	CMakeFiles/3_year.dir/Game_/src/client/platform/window.cpp.obj	f5b35a75fdf6ca5a
+48	2402	8105140450655209	CMakeFiles/3_year.dir/Game_/src/shared/time/timer.cpp.obj	456c5c7eaa5f7c88
+51	2523	8105140450685216	CMakeFiles/math_tests_release.dir/Game_/tests/math_tests.cpp.obj	43e0f692eb233343
+47	2537	8105140450635200	CMakeFiles/3_year.dir/Game_/src/client/platform/framebuffer.cpp.obj	e969c0ca96aee19b
+2523	2614	8105140475394700	math_tests_release.exe	8250982c14569fa5
+50	2700	8105140450675219	CMakeFiles/math_tests_debug.dir/Game_/tests/math_tests.cpp.obj	7fb9490be1c99fe1
+2701	2804	8105140477175305	math_tests_debug.exe	17e8d9a19b674544
+44	3590	8105140450615201	CMakeFiles/3_year.dir/Game_/src/client/main.cpp.obj	9832df88837ff3b9
+3590	3688	8105140486073068	3_year.exe	2e0c8fb8ff5a1ef3
