@@ -4,9 +4,9 @@
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
+#include <stdexcept>
 
 namespace {
-constexpr bool BACKFACE_CULLING_ENABLED = false;
 // EdgeFunction gives signed double-area, in squared screen pixels.
 constexpr float AREA_EPSILON = 1.0e-6f;
 
@@ -42,8 +42,62 @@ bool IsCovered(float e0, float e1, float e2, float signedArea) noexcept {
 }
 } // namespace
 
+Renderer::Renderer(Framebuffer& framebuffer)
+    : framebuffer_(framebuffer), depth_(framebuffer.Width(), framebuffer.Height()) {}
+
+void Renderer::SyncDepthSize() {
+    if (depth_.Width() != framebuffer_.Width() || depth_.Height() != framebuffer_.Height())
+        depth_.Resize(framebuffer_.Width(), framebuffer_.Height());
+}
+
+void Renderer::ClearDepth(float value) {
+    SyncDepthSize();
+    depth_.Clear(value);
+}
+
+void Renderer::DrawMesh(std::span<const MeshVertex> vertices,
+                        std::span<const std::uint32_t> indices, const math::Mat4& model,
+                        const math::Mat4& view, const math::Mat4& projection) {
+    if (indices.size() % 3 != 0) throw std::invalid_argument("Triangle index count must be a multiple of 3");
+    for (const auto index : indices)
+        if (index >= vertices.size()) throw std::out_of_range("Mesh vertex index out of range");
+    SyncDepthSize();
+    const float width = static_cast<float>(framebuffer_.Width());
+    const float height = static_cast<float>(framebuffer_.Height());
+    if (width <= 0.0f || height <= 0.0f) return;
+    const math::Mat4 mvp = projection * view * model;
+
+    for (std::size_t i = 0; i < indices.size(); i += 3) {
+        math::Vec4 clip[3];
+        bool rejected = false;
+        for (std::size_t j = 0; j < 3; ++j) {
+            const auto& p = vertices[indices[i + j]].position;
+            clip[j] = mvp * math::Vec4{p.x, p.y, p.z, 1.0f};
+            const auto& c = clip[j];
+            // w<=0 rejects at/behind the eye; z<0 rejects the actual near plane
+            // for the chosen [0,1] depth convention. Do this BEFORE division.
+            if (!std::isfinite(c.x) || !std::isfinite(c.y) ||
+                !std::isfinite(c.z) || !std::isfinite(c.w) || c.w <= 0.0f || c.z < 0.0f)
+                rejected = true;
+        }
+        if (rejected) continue;
+
+        ScreenVertex screen[3];
+        for (std::size_t j = 0; j < 3; ++j) {
+            const auto& c = clip[j];
+            const math::Vec3 ndc{c.x / c.w, c.y / c.w, c.z / c.w};
+            screen[j] = {{(ndc.x + 1.0f) * 0.5f * width,
+                          (1.0f - ndc.y) * 0.5f * height},
+                         vertices[indices[i + j]].color, ndc.z};
+        }
+        // DrawTriangle performs screen-space CCW culling before its AABB loop.
+        DrawTriangle(screen[0], screen[1], screen[2]);
+    }
+}
+
 void Renderer::DrawTriangle(const ScreenVertex& v0, const ScreenVertex& v1,
                             const ScreenVertex& v2) {
+    SyncDepthSize();
     const int width = framebuffer_.Width();
     const int height = framebuffer_.Height();
     if (width <= 0 || height <= 0) return;
@@ -53,9 +107,9 @@ void Renderer::DrawTriangle(const ScreenVertex& v0, const ScreenVertex& v1,
     if (!std::isfinite(signedArea) || std::fabs(signedArea) <= AREA_EPSILON) return;
 
     // With the prescribed edge function and Y-down framebuffer, visually CCW
-    // triangles have POSITIVE area. Culling is deliberately bypassed for now.
+    // triangles have POSITIVE area after the viewport Y inversion.
     const bool isFrontFace = signedArea > 0.0f;
-    if (BACKFACE_CULLING_ENABLED && !isFrontFace) return;
+    if (!isFrontFace) return;
 
     // AABB setup: clamp BEFORE integer conversion and iteration. Bounds are
     // conservative for center sampling; the maximum bounds are exclusive.
@@ -91,11 +145,16 @@ void Renderer::DrawTriangle(const ScreenVertex& v0, const ScreenVertex& v1,
             const float w1 = e1 / signedArea;
             const float w2 = e2 / signedArea;
             if (!std::isfinite(w0) || !std::isfinite(w1) || !std::isfinite(w2)) continue;
+            // z_ndc, unlike view-space z, is affine in screen barycentrics.
+            // Do NOT divide this interpolation by interpolated reciprocal w.
+            const float z = w0 * v0.depth + w1 * v1.depth + w2 * v2.depth;
+            const std::size_t index = row + static_cast<std::size_t>(x);
+            if (!depth_.TestAndWrite(index, z)) continue;
             const std::uint32_t color = PackRGB(
                 w0 * c0.r + w1 * c1.r + w2 * c2.r,
                 w0 * c0.g + w1 * c1.g + w2 * c2.g,
                 w0 * c0.b + w1 * c1.b + w2 * c2.b);
-            pixels[row + static_cast<std::size_t>(x)] = color;
+            pixels[index] = color;
         }
     }
 }

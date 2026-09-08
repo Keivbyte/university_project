@@ -15,6 +15,10 @@ add_executable(3_year
         Game_/src/client/main.cpp
         Game_/src/client/render/renderer.cpp
         Game_/src/client/render/renderer.h
+        Game_/src/client/render/depth_buffer.cpp
+        Game_/src/client/render/depth_buffer.h
+        Game_/src/client/render/projection.cpp
+        Game_/src/client/render/projection.h
         Game_/src/client/platform/window.cpp
         Game_/src/client/platform/window.h
         Game_/src/client/platform/framebuffer.h
@@ -58,21 +62,25 @@ if(BUILD_TESTING)
         endif()
         add_test(NAME math_${mode} COMMAND math_tests_${mode})
         if(WIN32)
-            add_executable(rasterizer_tests_${mode}
-                Game_/tests/rasterizer_tests.cpp
+            foreach(render_test IN ITEMS rasterizer pipeline)
+            add_executable(${render_test}_tests_${mode}
+                Game_/tests/${render_test}_tests.cpp
                 Game_/src/client/render/renderer.cpp
+                Game_/src/client/render/depth_buffer.cpp
+                Game_/src/client/render/projection.cpp
                 Game_/src/client/platform/framebuffer.cpp)
-            target_link_libraries(rasterizer_tests_${mode} PRIVATE game_math)
-            target_compile_definitions(rasterizer_tests_${mode} PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
+            target_link_libraries(${render_test}_tests_${mode} PRIVATE game_math)
+            target_compile_definitions(${render_test}_tests_${mode} PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
             if(mode STREQUAL "release")
-                target_compile_definitions(rasterizer_tests_${mode} PRIVATE NDEBUG)
+                target_compile_definitions(${render_test}_tests_${mode} PRIVATE NDEBUG)
             endif()
             # Match the math test targets' strict warnings and assertion mode.
             get_target_property(test_options math_tests_${mode} COMPILE_OPTIONS)
             if(test_options)
-                target_compile_options(rasterizer_tests_${mode} PRIVATE ${test_options})
+                target_compile_options(${render_test}_tests_${mode} PRIVATE ${test_options})
             endif()
-            add_test(NAME rasterizer_${mode} COMMAND rasterizer_tests_${mode})
+            add_test(NAME ${render_test}_${mode} COMMAND ${render_test}_tests_${mode})
+            endforeach()
         endif()
     endforeach()
 endif()

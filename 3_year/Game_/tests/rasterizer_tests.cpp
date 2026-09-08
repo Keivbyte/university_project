@@ -30,6 +30,14 @@ bool IsClear(const Framebuffer& fb) {
     const auto pixels = Snapshot(fb);
     return std::all_of(pixels.begin(), pixels.end(), [](auto c) { return c == BACKGROUND; });
 }
+// Keep Phase 6 coverage/color regressions independent of depth history and winding.
+// Phase 7 tests separately verify strict depth ordering and rejection of CW faces.
+void DrawFront(Renderer& renderer, ScreenVertex a, ScreenVertex b, ScreenVertex c) {
+    renderer.ClearDepth();
+    if (Renderer::EdgeFunction(a.position, b.position, c.position) < 0.0f)
+        std::swap(b, c);
+    renderer.DrawTriangle(a, b, c);
+}
 } // namespace
 
 static_assert(Renderer::EdgeFunction({0, 0}, {0, 4}, {4, 0}) == 16);
@@ -46,7 +54,7 @@ int main() {
         {{0, 0}, 0x12FF0000u}, {{4, 0}, 0x3400FF00u}, {{0, 4}, 0x560000FFu}
     }};
     fb.Clear(BACKGROUND);
-    renderer.DrawTriangle(triangle[0], triangle[1], triangle[2]);
+    DrawFront(renderer, triangle[0], triangle[1], triangle[2]);
     CHECK(fb.GetPixel(0, 0) == 0xFFBF2020u);
     CHECK(fb.GetPixel(1, 0) == 0xFF806020u);
     CHECK(fb.GetPixel(3, 0) == 0xFF00DF20u); // exactly on the hypotenuse
@@ -61,41 +69,41 @@ int main() {
     std::array<int, 3> order{0, 1, 2};
     do {
         fb.Clear(BACKGROUND);
-        renderer.DrawTriangle(triangle[static_cast<std::size_t>(order[0])],
+        DrawFront(renderer, triangle[static_cast<std::size_t>(order[0])],
                               triangle[static_cast<std::size_t>(order[1])],
                               triangle[static_cast<std::size_t>(order[2])]);
         CHECK(Snapshot(fb) == reference);
     } while (std::next_permutation(order.begin(), order.end()));
 
     // Flat shading is the same path with identical colors; later draws win.
-    renderer.DrawTriangle({{0, 0}, 0xFF123456u}, {{4, 0}, 0xFF123456u}, {{0, 4}, 0xFF123456u});
+    DrawFront(renderer, {{0, 0}, 0xFF123456u}, {{4, 0}, 0xFF123456u}, {{0, 4}, 0xFF123456u});
     CHECK(fb.GetPixel(0, 0) == 0xFF123456u);
-    renderer.DrawTriangle(triangle[0], triangle[1], triangle[2]);
+    DrawFront(renderer, triangle[0], triangle[1], triangle[2]);
     CHECK(Snapshot(fb) == reference);
 
     // Collinear, repeated, near-zero area and nonfinite vertices leave pixels alone.
     fb.Clear(BACKGROUND);
-    renderer.DrawTriangle({{0, 0}}, {{2, 2}}, {{4, 4}});
-    renderer.DrawTriangle({{1, 1}}, {{1, 1}}, {{4, 4}});
-    renderer.DrawTriangle({{0, 0}}, {{0.0001f, 0}}, {{0, 0.0001f}});
+    DrawFront(renderer, {{0, 0}}, {{2, 2}}, {{4, 4}});
+    DrawFront(renderer, {{1, 1}}, {{1, 1}}, {{4, 4}});
+    DrawFront(renderer, {{0, 0}}, {{0.0001f, 0}}, {{0, 0.0001f}});
     const float nan = std::numeric_limits<float>::quiet_NaN();
     const float inf = std::numeric_limits<float>::infinity();
-    renderer.DrawTriangle({{nan, 0}}, {{4, 0}}, {{0, 4}});
-    renderer.DrawTriangle({{0, 0}}, {{inf, 0}}, {{0, 4}});
+    DrawFront(renderer, {{nan, 0}}, {{4, 0}}, {{0, 4}});
+    DrawFront(renderer, {{0, 0}}, {{inf, 0}}, {{0, 4}});
     CHECK(IsClear(fb));
 
     // Fully offscreen on each side, including exact exclusive width/height bounds.
-    renderer.DrawTriangle({{-4, 0}}, {{0, 0}}, {{-4, 4}});
-    renderer.DrawTriangle({{8, 0}}, {{12, 0}}, {{8, 4}});
-    renderer.DrawTriangle({{0, -4}}, {{4, -4}}, {{0, 0}});
-    renderer.DrawTriangle({{0, 8}}, {{4, 8}}, {{0, 12}});
+    DrawFront(renderer, {{-4, 0}}, {{0, 0}}, {{-4, 4}});
+    DrawFront(renderer, {{8, 0}}, {{12, 0}}, {{8, 4}});
+    DrawFront(renderer, {{0, -4}}, {{4, -4}}, {{0, 0}});
+    DrawFront(renderer, {{0, 8}}, {{4, 8}}, {{0, 12}});
     CHECK(IsClear(fb));
 
     // Geometry in one pixel's corner must not cover that pixel's center.
-    renderer.DrawTriangle({{0, 0}}, {{0.4f, 0}}, {{0, 0.4f}});
+    DrawFront(renderer, {{0, 0}}, {{0.4f, 0}}, {{0, 0.4f}});
     CHECK(IsClear(fb));
     // Fractional vertices place the center exactly on a vertex/edge: inclusive now.
-    renderer.DrawTriangle({{0.5f, 0.5f}}, {{1.5f, 0.5f}}, {{0.5f, 1.5f}});
+    DrawFront(renderer, {{0.5f, 0.5f}}, {{1.5f, 0.5f}}, {{0.5f, 1.5f}});
     CHECK(fb.GetPixel(0, 0) == 0xFFFFFFFFu);
     CHECK(fb.GetPixel(1, 0) == 0xFFFFFFFFu);
     CHECK(fb.GetPixel(0, 1) == 0xFFFFFFFFu);
@@ -103,32 +111,33 @@ int main() {
 
     // A triangle extending past all screen bounds covers even the final row/column.
     fb.Clear(BACKGROUND);
-    renderer.DrawTriangle({{-100, -100}}, {{300, -100}}, {{-100, 300}});
+    DrawFront(renderer, {{-100, -100}}, {{300, -100}}, {{-100, 300}});
     for (const auto pixel : Snapshot(fb)) CHECK(pixel == 0xFFFFFFFFu);
 
     // Very large, but finite area: bounds must be clamped before conversion to int.
     fb.Clear(BACKGROUND);
-    renderer.DrawTriangle({{-1.0e10f, -1.0e10f}}, {{3.0e10f, -1.0e10f}}, {{-1.0e10f, 3.0e10f}});
+    DrawFront(renderer, {{-1.0e10f, -1.0e10f}}, {{3.0e10f, -1.0e10f}}, {{-1.0e10f, 3.0e10f}});
     CHECK(fb.GetPixel(7, 7) == 0xFFFFFFFFu);
     fb.Clear(BACKGROUND);
     const float huge = std::numeric_limits<float>::max();
-    renderer.DrawTriangle({{-huge, -huge}}, {{huge, -huge}}, {{0, huge}});
+    DrawFront(renderer, {{-huge, -huge}}, {{huge, -huge}}, {{0, huge}});
     CHECK(IsClear(fb)); // overflowing edge arithmetic is discarded
 
     // Two triangles tile the screen with no holes. Shared diagonal is inclusive.
     fb.Clear(BACKGROUND);
-    renderer.DrawTriangle({{0, 0}}, {{8, 0}}, {{0, 8}});
-    renderer.DrawTriangle({{8, 0}}, {{8, 8}}, {{0, 8}});
+    DrawFront(renderer, {{0, 0}}, {{8, 0}}, {{0, 8}});
+    DrawFront(renderer, {{8, 0}}, {{8, 8}}, {{0, 8}});
     for (const auto pixel : Snapshot(fb)) CHECK(pixel == 0xFFFFFFFFu);
 
     // Renderer must use current dimensions/data after framebuffer resize.
     fb.Resize(1, 1);
     fb.Clear(BACKGROUND);
-    renderer.DrawTriangle({{-1, -1}}, {{3, -1}}, {{-1, 3}});
+    DrawFront(renderer, {{-1, -1}}, {{3, -1}}, {{-1, 3}});
     CHECK(fb.GetPixel(0, 0) == 0xFFFFFFFFu);
     fb.Resize(0, 0);
-    renderer.DrawTriangle(triangle[0], triangle[1], triangle[2]);
+    DrawFront(renderer, triangle[0], triangle[1], triangle[2]);
     CHECK(fb.Width() == 0 && fb.Height() == 0);
 
     std::cout << checks << " rasterizer checks passed\n";
 }
+

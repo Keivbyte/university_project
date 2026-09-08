@@ -67,6 +67,24 @@ build CMakeFiles/3_year.dir/Game_/src/client/render/renderer.cpp.obj: CXX_COMPIL
   OBJECT_DIR = CMakeFiles\3_year.dir
   OBJECT_FILE_DIR = CMakeFiles\3_year.dir\Game_\src\client\render
 
+build CMakeFiles/3_year.dir/Game_/src/client/render/depth_buffer.cpp.obj: CXX_COMPILER__3_year_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/render/depth_buffer.cpp || cmake_object_order_depends_target_3_year
+  CONFIG = Debug
+  DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\3_year.dir\Game_\src\client\render\depth_buffer.cpp.obj.d
+  FLAGS = -g -std=c++20
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\3_year.dir
+  OBJECT_FILE_DIR = CMakeFiles\3_year.dir\Game_\src\client\render
+
+build CMakeFiles/3_year.dir/Game_/src/client/render/projection.cpp.obj: CXX_COMPILER__3_year_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/render/projection.cpp || cmake_object_order_depends_target_3_year
+  CONFIG = Debug
+  DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\3_year.dir\Game_\src\client\render\projection.cpp.obj.d
+  FLAGS = -g -std=c++20
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\3_year.dir
+  OBJECT_FILE_DIR = CMakeFiles\3_year.dir\Game_\src\client\render
+
 build CMakeFiles/3_year.dir/Game_/src/client/platform/window.cpp.obj: CXX_COMPILER__3_year_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/platform/window.cpp || cmake_object_order_depends_target_3_year
   CONFIG = Debug
   DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN
@@ -120,7 +138,7 @@ build CMakeFiles/3_year.dir/Game_/src/server/app/server_main.cpp.obj: CXX_COMPIL
 #############################################
 # Link the executable 3_year.exe
 
-build 3_year.exe: CXX_EXECUTABLE_LINKER__3_year_Debug CMakeFiles/3_year.dir/Game_/src/client/main.cpp.obj CMakeFiles/3_year.dir/Game_/src/client/render/renderer.cpp.obj CMakeFiles/3_year.dir/Game_/src/client/platform/window.cpp.obj CMakeFiles/3_year.dir/Game_/src/client/platform/framebuffer.cpp.obj CMakeFiles/3_year.dir/Game_/src/client/platform/input.cpp.obj CMakeFiles/3_year.dir/Game_/src/shared/time/timer.cpp.obj CMakeFiles/3_year.dir/Game_/src/server/app/server_main.cpp.obj
+build 3_year.exe: CXX_EXECUTABLE_LINKER__3_year_Debug CMakeFiles/3_year.dir/Game_/src/client/main.cpp.obj CMakeFiles/3_year.dir/Game_/src/client/render/renderer.cpp.obj CMakeFiles/3_year.dir/Game_/src/client/render/depth_buffer.cpp.obj CMakeFiles/3_year.dir/Game_/src/client/render/projection.cpp.obj CMakeFiles/3_year.dir/Game_/src/client/platform/window.cpp.obj CMakeFiles/3_year.dir/Game_/src/client/platform/framebuffer.cpp.obj CMakeFiles/3_year.dir/Game_/src/client/platform/input.cpp.obj CMakeFiles/3_year.dir/Game_/src/shared/time/timer.cpp.obj CMakeFiles/3_year.dir/Game_/src/server/app/server_main.cpp.obj
   CONFIG = Debug
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
@@ -362,6 +380,24 @@ build CMakeFiles/rasterizer_tests_debug.dir/Game_/src/client/render/renderer.cpp
   OBJECT_DIR = CMakeFiles\rasterizer_tests_debug.dir
   OBJECT_FILE_DIR = CMakeFiles\rasterizer_tests_debug.dir\Game_\src\client\render
 
+build CMakeFiles/rasterizer_tests_debug.dir/Game_/src/client/render/depth_buffer.cpp.obj: CXX_COMPILER__rasterizer_tests_debug_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/render/depth_buffer.cpp || cmake_object_order_depends_target_rasterizer_tests_debug
+  CONFIG = Debug
+  DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\rasterizer_tests_debug.dir\Game_\src\client\render\depth_buffer.cpp.obj.d
+  FLAGS = -g -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -UNDEBUG
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\rasterizer_tests_debug.dir
+  OBJECT_FILE_DIR = CMakeFiles\rasterizer_tests_debug.dir\Game_\src\client\render
+
+build CMakeFiles/rasterizer_tests_debug.dir/Game_/src/client/render/projection.cpp.obj: CXX_COMPILER__rasterizer_tests_debug_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/render/projection.cpp || cmake_object_order_depends_target_rasterizer_tests_debug
+  CONFIG = Debug
+  DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\rasterizer_tests_debug.dir\Game_\src\client\render\projection.cpp.obj.d
+  FLAGS = -g -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -UNDEBUG
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\rasterizer_tests_debug.dir
+  OBJECT_FILE_DIR = CMakeFiles\rasterizer_tests_debug.dir\Game_\src\client\render
+
 build CMakeFiles/rasterizer_tests_debug.dir/Game_/src/client/platform/framebuffer.cpp.obj: CXX_COMPILER__rasterizer_tests_debug_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/platform/framebuffer.cpp || cmake_object_order_depends_target_rasterizer_tests_debug
   CONFIG = Debug
   DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN
@@ -379,7 +415,7 @@ build CMakeFiles/rasterizer_tests_debug.dir/Game_/src/client/platform/framebuffe
 #############################################
 # Link the executable rasterizer_tests_debug.exe
 
-build rasterizer_tests_debug.exe: CXX_EXECUTABLE_LINKER__rasterizer_tests_debug_Debug CMakeFiles/rasterizer_tests_debug.dir/Game_/tests/rasterizer_tests.cpp.obj CMakeFiles/rasterizer_tests_debug.dir/Game_/src/client/render/renderer.cpp.obj CMakeFiles/rasterizer_tests_debug.dir/Game_/src/client/platform/framebuffer.cpp.obj
+build rasterizer_tests_debug.exe: CXX_EXECUTABLE_LINKER__rasterizer_tests_debug_Debug CMakeFiles/rasterizer_tests_debug.dir/Game_/tests/rasterizer_tests.cpp.obj CMakeFiles/rasterizer_tests_debug.dir/Game_/src/client/render/renderer.cpp.obj CMakeFiles/rasterizer_tests_debug.dir/Game_/src/client/render/depth_buffer.cpp.obj CMakeFiles/rasterizer_tests_debug.dir/Game_/src/client/render/projection.cpp.obj CMakeFiles/rasterizer_tests_debug.dir/Game_/src/client/platform/framebuffer.cpp.obj
   CONFIG = Debug
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
@@ -389,6 +425,79 @@ build rasterizer_tests_debug.exe: CXX_EXECUTABLE_LINKER__rasterizer_tests_debug_
   TARGET_FILE = rasterizer_tests_debug.exe
   TARGET_IMPLIB = librasterizer_tests_debug.dll.a
   TARGET_PDB = rasterizer_tests_debug.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target pipeline_tests_debug
+
+
+#############################################
+# Order-only phony target for pipeline_tests_debug
+
+build cmake_object_order_depends_target_pipeline_tests_debug: phony || .
+
+build CMakeFiles/pipeline_tests_debug.dir/Game_/tests/pipeline_tests.cpp.obj: CXX_COMPILER__pipeline_tests_debug_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/tests/pipeline_tests.cpp || cmake_object_order_depends_target_pipeline_tests_debug
+  CONFIG = Debug
+  DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\pipeline_tests_debug.dir\Game_\tests\pipeline_tests.cpp.obj.d
+  FLAGS = -g -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -UNDEBUG
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\pipeline_tests_debug.dir
+  OBJECT_FILE_DIR = CMakeFiles\pipeline_tests_debug.dir\Game_\tests
+
+build CMakeFiles/pipeline_tests_debug.dir/Game_/src/client/render/renderer.cpp.obj: CXX_COMPILER__pipeline_tests_debug_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/render/renderer.cpp || cmake_object_order_depends_target_pipeline_tests_debug
+  CONFIG = Debug
+  DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\pipeline_tests_debug.dir\Game_\src\client\render\renderer.cpp.obj.d
+  FLAGS = -g -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -UNDEBUG
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\pipeline_tests_debug.dir
+  OBJECT_FILE_DIR = CMakeFiles\pipeline_tests_debug.dir\Game_\src\client\render
+
+build CMakeFiles/pipeline_tests_debug.dir/Game_/src/client/render/depth_buffer.cpp.obj: CXX_COMPILER__pipeline_tests_debug_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/render/depth_buffer.cpp || cmake_object_order_depends_target_pipeline_tests_debug
+  CONFIG = Debug
+  DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\pipeline_tests_debug.dir\Game_\src\client\render\depth_buffer.cpp.obj.d
+  FLAGS = -g -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -UNDEBUG
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\pipeline_tests_debug.dir
+  OBJECT_FILE_DIR = CMakeFiles\pipeline_tests_debug.dir\Game_\src\client\render
+
+build CMakeFiles/pipeline_tests_debug.dir/Game_/src/client/render/projection.cpp.obj: CXX_COMPILER__pipeline_tests_debug_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/render/projection.cpp || cmake_object_order_depends_target_pipeline_tests_debug
+  CONFIG = Debug
+  DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\pipeline_tests_debug.dir\Game_\src\client\render\projection.cpp.obj.d
+  FLAGS = -g -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -UNDEBUG
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\pipeline_tests_debug.dir
+  OBJECT_FILE_DIR = CMakeFiles\pipeline_tests_debug.dir\Game_\src\client\render
+
+build CMakeFiles/pipeline_tests_debug.dir/Game_/src/client/platform/framebuffer.cpp.obj: CXX_COMPILER__pipeline_tests_debug_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/platform/framebuffer.cpp || cmake_object_order_depends_target_pipeline_tests_debug
+  CONFIG = Debug
+  DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\pipeline_tests_debug.dir\Game_\src\client\platform\framebuffer.cpp.obj.d
+  FLAGS = -g -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -UNDEBUG
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\pipeline_tests_debug.dir
+  OBJECT_FILE_DIR = CMakeFiles\pipeline_tests_debug.dir\Game_\src\client\platform
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target pipeline_tests_debug
+
+
+#############################################
+# Link the executable pipeline_tests_debug.exe
+
+build pipeline_tests_debug.exe: CXX_EXECUTABLE_LINKER__pipeline_tests_debug_Debug CMakeFiles/pipeline_tests_debug.dir/Game_/tests/pipeline_tests.cpp.obj CMakeFiles/pipeline_tests_debug.dir/Game_/src/client/render/renderer.cpp.obj CMakeFiles/pipeline_tests_debug.dir/Game_/src/client/render/depth_buffer.cpp.obj CMakeFiles/pipeline_tests_debug.dir/Game_/src/client/render/projection.cpp.obj CMakeFiles/pipeline_tests_debug.dir/Game_/src/client/platform/framebuffer.cpp.obj
+  CONFIG = Debug
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\pipeline_tests_debug.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = pipeline_tests_debug.exe
+  TARGET_IMPLIB = libpipeline_tests_debug.dll.a
+  TARGET_PDB = pipeline_tests_debug.exe.dbg
 
 # =============================================================================
 # Object build statements for EXECUTABLE target math_tests_release
@@ -454,6 +563,24 @@ build CMakeFiles/rasterizer_tests_release.dir/Game_/src/client/render/renderer.c
   OBJECT_DIR = CMakeFiles\rasterizer_tests_release.dir
   OBJECT_FILE_DIR = CMakeFiles\rasterizer_tests_release.dir\Game_\src\client\render
 
+build CMakeFiles/rasterizer_tests_release.dir/Game_/src/client/render/depth_buffer.cpp.obj: CXX_COMPILER__rasterizer_tests_release_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/render/depth_buffer.cpp || cmake_object_order_depends_target_rasterizer_tests_release
+  CONFIG = Debug
+  DEFINES = -DNDEBUG -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\rasterizer_tests_release.dir\Game_\src\client\render\depth_buffer.cpp.obj.d
+  FLAGS = -g -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -O2
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\rasterizer_tests_release.dir
+  OBJECT_FILE_DIR = CMakeFiles\rasterizer_tests_release.dir\Game_\src\client\render
+
+build CMakeFiles/rasterizer_tests_release.dir/Game_/src/client/render/projection.cpp.obj: CXX_COMPILER__rasterizer_tests_release_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/render/projection.cpp || cmake_object_order_depends_target_rasterizer_tests_release
+  CONFIG = Debug
+  DEFINES = -DNDEBUG -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\rasterizer_tests_release.dir\Game_\src\client\render\projection.cpp.obj.d
+  FLAGS = -g -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -O2
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\rasterizer_tests_release.dir
+  OBJECT_FILE_DIR = CMakeFiles\rasterizer_tests_release.dir\Game_\src\client\render
+
 build CMakeFiles/rasterizer_tests_release.dir/Game_/src/client/platform/framebuffer.cpp.obj: CXX_COMPILER__rasterizer_tests_release_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/platform/framebuffer.cpp || cmake_object_order_depends_target_rasterizer_tests_release
   CONFIG = Debug
   DEFINES = -DNDEBUG -DNOMINMAX -DWIN32_LEAN_AND_MEAN
@@ -471,7 +598,7 @@ build CMakeFiles/rasterizer_tests_release.dir/Game_/src/client/platform/framebuf
 #############################################
 # Link the executable rasterizer_tests_release.exe
 
-build rasterizer_tests_release.exe: CXX_EXECUTABLE_LINKER__rasterizer_tests_release_Debug CMakeFiles/rasterizer_tests_release.dir/Game_/tests/rasterizer_tests.cpp.obj CMakeFiles/rasterizer_tests_release.dir/Game_/src/client/render/renderer.cpp.obj CMakeFiles/rasterizer_tests_release.dir/Game_/src/client/platform/framebuffer.cpp.obj
+build rasterizer_tests_release.exe: CXX_EXECUTABLE_LINKER__rasterizer_tests_release_Debug CMakeFiles/rasterizer_tests_release.dir/Game_/tests/rasterizer_tests.cpp.obj CMakeFiles/rasterizer_tests_release.dir/Game_/src/client/render/renderer.cpp.obj CMakeFiles/rasterizer_tests_release.dir/Game_/src/client/render/depth_buffer.cpp.obj CMakeFiles/rasterizer_tests_release.dir/Game_/src/client/render/projection.cpp.obj CMakeFiles/rasterizer_tests_release.dir/Game_/src/client/platform/framebuffer.cpp.obj
   CONFIG = Debug
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
@@ -481,6 +608,79 @@ build rasterizer_tests_release.exe: CXX_EXECUTABLE_LINKER__rasterizer_tests_rele
   TARGET_FILE = rasterizer_tests_release.exe
   TARGET_IMPLIB = librasterizer_tests_release.dll.a
   TARGET_PDB = rasterizer_tests_release.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target pipeline_tests_release
+
+
+#############################################
+# Order-only phony target for pipeline_tests_release
+
+build cmake_object_order_depends_target_pipeline_tests_release: phony || .
+
+build CMakeFiles/pipeline_tests_release.dir/Game_/tests/pipeline_tests.cpp.obj: CXX_COMPILER__pipeline_tests_release_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/tests/pipeline_tests.cpp || cmake_object_order_depends_target_pipeline_tests_release
+  CONFIG = Debug
+  DEFINES = -DNDEBUG -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\pipeline_tests_release.dir\Game_\tests\pipeline_tests.cpp.obj.d
+  FLAGS = -g -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -O2
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\pipeline_tests_release.dir
+  OBJECT_FILE_DIR = CMakeFiles\pipeline_tests_release.dir\Game_\tests
+
+build CMakeFiles/pipeline_tests_release.dir/Game_/src/client/render/renderer.cpp.obj: CXX_COMPILER__pipeline_tests_release_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/render/renderer.cpp || cmake_object_order_depends_target_pipeline_tests_release
+  CONFIG = Debug
+  DEFINES = -DNDEBUG -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\pipeline_tests_release.dir\Game_\src\client\render\renderer.cpp.obj.d
+  FLAGS = -g -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -O2
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\pipeline_tests_release.dir
+  OBJECT_FILE_DIR = CMakeFiles\pipeline_tests_release.dir\Game_\src\client\render
+
+build CMakeFiles/pipeline_tests_release.dir/Game_/src/client/render/depth_buffer.cpp.obj: CXX_COMPILER__pipeline_tests_release_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/render/depth_buffer.cpp || cmake_object_order_depends_target_pipeline_tests_release
+  CONFIG = Debug
+  DEFINES = -DNDEBUG -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\pipeline_tests_release.dir\Game_\src\client\render\depth_buffer.cpp.obj.d
+  FLAGS = -g -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -O2
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\pipeline_tests_release.dir
+  OBJECT_FILE_DIR = CMakeFiles\pipeline_tests_release.dir\Game_\src\client\render
+
+build CMakeFiles/pipeline_tests_release.dir/Game_/src/client/render/projection.cpp.obj: CXX_COMPILER__pipeline_tests_release_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/render/projection.cpp || cmake_object_order_depends_target_pipeline_tests_release
+  CONFIG = Debug
+  DEFINES = -DNDEBUG -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\pipeline_tests_release.dir\Game_\src\client\render\projection.cpp.obj.d
+  FLAGS = -g -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -O2
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\pipeline_tests_release.dir
+  OBJECT_FILE_DIR = CMakeFiles\pipeline_tests_release.dir\Game_\src\client\render
+
+build CMakeFiles/pipeline_tests_release.dir/Game_/src/client/platform/framebuffer.cpp.obj: CXX_COMPILER__pipeline_tests_release_unscanned_Debug C$:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src/client/platform/framebuffer.cpp || cmake_object_order_depends_target_pipeline_tests_release
+  CONFIG = Debug
+  DEFINES = -DNDEBUG -DNOMINMAX -DWIN32_LEAN_AND_MEAN
+  DEP_FILE = CMakeFiles\pipeline_tests_release.dir\Game_\src\client\platform\framebuffer.cpp.obj.d
+  FLAGS = -g -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -O2
+  INCLUDES = -IC:/Users/user/Desktop/Keivbyte/university/3_year/Game_/src
+  OBJECT_DIR = CMakeFiles\pipeline_tests_release.dir
+  OBJECT_FILE_DIR = CMakeFiles\pipeline_tests_release.dir\Game_\src\client\platform
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target pipeline_tests_release
+
+
+#############################################
+# Link the executable pipeline_tests_release.exe
+
+build pipeline_tests_release.exe: CXX_EXECUTABLE_LINKER__pipeline_tests_release_Debug CMakeFiles/pipeline_tests_release.dir/Game_/tests/pipeline_tests.cpp.obj CMakeFiles/pipeline_tests_release.dir/Game_/src/client/render/renderer.cpp.obj CMakeFiles/pipeline_tests_release.dir/Game_/src/client/render/depth_buffer.cpp.obj CMakeFiles/pipeline_tests_release.dir/Game_/src/client/render/projection.cpp.obj CMakeFiles/pipeline_tests_release.dir/Game_/src/client/platform/framebuffer.cpp.obj
+  CONFIG = Debug
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\pipeline_tests_release.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = pipeline_tests_release.exe
+  TARGET_IMPLIB = libpipeline_tests_release.dll.a
+  TARGET_PDB = pipeline_tests_release.exe.dbg
 
 
 #############################################
@@ -750,6 +950,10 @@ build math_tests_debug: phony math_tests_debug.exe
 
 build math_tests_release: phony math_tests_release.exe
 
+build pipeline_tests_debug: phony pipeline_tests_debug.exe
+
+build pipeline_tests_release: phony pipeline_tests_release.exe
+
 build rasterizer_tests_debug: phony rasterizer_tests_debug.exe
 
 build rasterizer_tests_release: phony rasterizer_tests_release.exe
@@ -762,7 +966,7 @@ build rasterizer_tests_release: phony rasterizer_tests_release.exe
 #############################################
 # Folder: C:/Users/user/Desktop/Keivbyte/university/3_year/build-math
 
-build all: phony 3_year.exe math_tests_debug.exe rasterizer_tests_debug.exe math_tests_release.exe rasterizer_tests_release.exe
+build all: phony 3_year.exe math_tests_debug.exe rasterizer_tests_debug.exe pipeline_tests_debug.exe math_tests_release.exe rasterizer_tests_release.exe pipeline_tests_release.exe
 
 # =============================================================================
 # Built-in targets
