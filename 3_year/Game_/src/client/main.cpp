@@ -1,6 +1,7 @@
 #include "platform/window.h"
 #include "platform/framebuffer.h"
 #include "platform/input.h"
+#include "render/renderer.h"
 #include "shared/time/timer.h"
 #include <iostream>
 #include <string>
@@ -9,13 +10,11 @@ int main() {
     try {
         Window window(1280, 800, L"Game");
         Framebuffer fb(320, 200);
+        Renderer renderer(fb);
         Timer timer;
 
         Input input;
         window.SetInput(&input);   // Window::WndProc now forwards into OnMessage
-
-        fb.Clear(0xFFFF0000);
-        fb.SetPixel(160, 100, 0xFF0000FF);
 
         double fpsDisplayTimer = 0.0;
 
@@ -45,7 +44,15 @@ int main() {
             //   float zoom        = input.MouseWheel();
             (void)dt;
 
-            // 5. Present + FPS readout, twice a second.
+            // 5. Screen-space gradient triangle, visually CCW in the Y-down buffer.
+            fb.Clear(0xFF182030u);
+            renderer.DrawTriangle(
+                {{160.0f, 25.0f}, 0xFFFF0000u}, // red, top
+                {{40.0f, 175.0f}, 0xFF00FF00u}, // green, bottom-left
+                {{280.0f, 175.0f}, 0xFF0000FFu} // blue, bottom-right
+            );
+
+            // 6. Present + FPS readout, twice a second.
             fpsDisplayTimer += dt;
             if (fpsDisplayTimer >= 0.5) {
                 std::wstring title = L"Game | FPS: " + std::to_wstring(static_cast<int>(timer.FPS()))

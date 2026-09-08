@@ -1,0 +1,101 @@
+#include "renderer.h"
+#include "client/platform/framebuffer.h"
+
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+
+namespace {
+constexpr bool BACKFACE_CULLING_ENABLED = false;
+// EdgeFunction gives signed double-area, in squared screen pixels.
+constexpr float AREA_EPSILON = 1.0e-6f;
+
+struct RGB {
+    float r;
+    float g;
+    float b;
+};
+
+constexpr RGB UnpackRGB(std::uint32_t color) noexcept {
+    return {static_cast<float>((color >> 16u) & 0xFFu),
+            static_cast<float>((color >> 8u) & 0xFFu),
+            static_cast<float>(color & 0xFFu)};
+}
+
+std::uint32_t PackRGB(float r, float g, float b) noexcept {
+    // Clamp rounding noise, then round each channel to the nearest byte.
+    const auto channel = [](float value) {
+        return static_cast<std::uint32_t>(std::clamp(value, 0.0f, 255.0f) + 0.5f);
+    };
+    return 0xFF000000u | (channel(r) << 16u) | (channel(g) << 8u) | channel(b);
+}
+
+bool IsFinite(const math::Vec2& p) noexcept {
+    return std::isfinite(p.x) && std::isfinite(p.y);
+}
+
+// Coverage policy is separate from interpolation. A future top-left rule
+// belongs here; its edge bias must NOT be applied to the barycentric values.
+bool IsCovered(float e0, float e1, float e2, float signedArea) noexcept {
+    if (signedArea > 0.0f) return e0 >= 0.0f && e1 >= 0.0f && e2 >= 0.0f;
+    return e0 <= 0.0f && e1 <= 0.0f && e2 <= 0.0f;
+}
+} // namespace
+
+void Renderer::DrawTriangle(const ScreenVertex& v0, const ScreenVertex& v1,
+                            const ScreenVertex& v2) {
+    const int width = framebuffer_.Width();
+    const int height = framebuffer_.Height();
+    if (width <= 0 || height <= 0) return;
+    if (!IsFinite(v0.position) || !IsFinite(v1.position) || !IsFinite(v2.position)) return;
+
+    const float signedArea = EdgeFunction(v0.position, v1.position, v2.position);
+    if (!std::isfinite(signedArea) || std::fabs(signedArea) <= AREA_EPSILON) return;
+
+    // With the prescribed edge function and Y-down framebuffer, visually CCW
+    // triangles have POSITIVE area. Culling is deliberately bypassed for now.
+    const bool isFrontFace = signedArea > 0.0f;
+    if (BACKFACE_CULLING_ENABLED && !isFrontFace) return;
+
+    // AABB setup: clamp BEFORE integer conversion and iteration. Bounds are
+    // conservative for center sampling; the maximum bounds are exclusive.
+    // Double here preserves integer screen limits during safe float-to-int conversion.
+    const double minX = std::min({v0.position.x, v1.position.x, v2.position.x});
+    const double minY = std::min({v0.position.y, v1.position.y, v2.position.y});
+    const double maxX = std::max({v0.position.x, v1.position.x, v2.position.x});
+    const double maxY = std::max({v0.position.y, v1.position.y, v2.position.y});
+    const int xBegin = static_cast<int>(std::floor(std::clamp(minX, 0.0, static_cast<double>(width))));
+    const int yBegin = static_cast<int>(std::floor(std::clamp(minY, 0.0, static_cast<double>(height))));
+    const int xEnd = static_cast<int>(std::ceil(std::clamp(maxX, 0.0, static_cast<double>(width))));
+    const int yEnd = static_cast<int>(std::ceil(std::clamp(maxY, 0.0, static_cast<double>(height))));
+    if (xBegin >= xEnd || yBegin >= yEnd) return;
+
+    const RGB c0 = UnpackRGB(v0.color);
+    const RGB c1 = UnpackRGB(v1.color);
+    const RGB c2 = UnpackRGB(v2.color);
+    std::uint32_t* const pixels = framebuffer_.Data();
+
+    // Independent pixel evaluations; future tiling/SIMD can retain this setup.
+    for (int y = yBegin; y < yEnd; ++y) {
+        const std::size_t row = static_cast<std::size_t>(y) * static_cast<std::size_t>(width);
+        for (int x = xBegin; x < xEnd; ++x) {
+            const math::Vec2 p{static_cast<float>(x) + 0.5f, static_cast<float>(y) + 0.5f};
+            const float e0 = EdgeFunction(v1.position, v2.position, p);
+            const float e1 = EdgeFunction(v2.position, v0.position, p);
+            const float e2 = EdgeFunction(v0.position, v1.position, p);
+            if (!std::isfinite(e0) || !std::isfinite(e1) || !std::isfinite(e2)) continue;
+            if (!IsCovered(e0, e1, e2, signedArea)) continue;
+
+            // Divide by SIGNED area: reversing winding flips numerator and denominator.
+            const float w0 = e0 / signedArea;
+            const float w1 = e1 / signedArea;
+            const float w2 = e2 / signedArea;
+            if (!std::isfinite(w0) || !std::isfinite(w1) || !std::isfinite(w2)) continue;
+            const std::uint32_t color = PackRGB(
+                w0 * c0.r + w1 * c1.r + w2 * c2.r,
+                w0 * c0.g + w1 * c1.g + w2 * c2.g,
+                w0 * c0.b + w1 * c1.b + w2 * c2.b);
+            pixels[row + static_cast<std::size_t>(x)] = color;
+        }
+    }
+}

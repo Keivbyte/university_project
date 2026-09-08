@@ -5,6 +5,10 @@
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.
 add_test([=[math_debug]=] "C:/Users/user/Desktop/Keivbyte/university/3_year/build-math/math_tests_debug.exe")
-set_tests_properties([=[math_debug]=] PROPERTIES  _BACKTRACE_TRIPLES "C:/Users/user/Desktop/Keivbyte/university/3_year/CMakeLists.txt;57;add_test;C:/Users/user/Desktop/Keivbyte/university/3_year/CMakeLists.txt;0;")
+set_tests_properties([=[math_debug]=] PROPERTIES  _BACKTRACE_TRIPLES "C:/Users/user/Desktop/Keivbyte/university/3_year/CMakeLists.txt;59;add_test;C:/Users/user/Desktop/Keivbyte/university/3_year/CMakeLists.txt;0;")
+add_test([=[rasterizer_debug]=] "C:/Users/user/Desktop/Keivbyte/university/3_year/build-math/rasterizer_tests_debug.exe")
+set_tests_properties([=[rasterizer_debug]=] PROPERTIES  _BACKTRACE_TRIPLES "C:/Users/user/Desktop/Keivbyte/university/3_year/CMakeLists.txt;75;add_test;C:/Users/user/Desktop/Keivbyte/university/3_year/CMakeLists.txt;0;")
 add_test([=[math_release]=] "C:/Users/user/Desktop/Keivbyte/university/3_year/build-math/math_tests_release.exe")
-set_tests_properties([=[math_release]=] PROPERTIES  _BACKTRACE_TRIPLES "C:/Users/user/Desktop/Keivbyte/university/3_year/CMakeLists.txt;57;add_test;C:/Users/user/Desktop/Keivbyte/university/3_year/CMakeLists.txt;0;")
+set_tests_properties([=[math_release]=] PROPERTIES  _BACKTRACE_TRIPLES "C:/Users/user/Desktop/Keivbyte/university/3_year/CMakeLists.txt;59;add_test;C:/Users/user/Desktop/Keivbyte/university/3_year/CMakeLists.txt;0;")
+add_test([=[rasterizer_release]=] "C:/Users/user/Desktop/Keivbyte/university/3_year/build-math/rasterizer_tests_release.exe")
+set_tests_properties([=[rasterizer_release]=] PROPERTIES  _BACKTRACE_TRIPLES "C:/Users/user/Desktop/Keivbyte/university/3_year/CMakeLists.txt;75;add_test;C:/Users/user/Desktop/Keivbyte/university/3_year/CMakeLists.txt;0;")
