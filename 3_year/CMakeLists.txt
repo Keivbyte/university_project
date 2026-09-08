@@ -19,6 +19,8 @@ add_executable(3_year
         Game_/src/client/render/depth_buffer.h
         Game_/src/client/render/projection.cpp
         Game_/src/client/render/projection.h
+        Game_/src/client/render/texture.h
+        Game_/src/client/render/texture.cpp
         Game_/src/client/platform/window.cpp
         Game_/src/client/platform/window.h
         Game_/src/client/platform/framebuffer.h
@@ -62,12 +64,13 @@ if(BUILD_TESTING)
         endif()
         add_test(NAME math_${mode} COMMAND math_tests_${mode})
         if(WIN32)
-            foreach(render_test IN ITEMS rasterizer pipeline)
+            foreach(render_test IN ITEMS rasterizer pipeline texture)
             add_executable(${render_test}_tests_${mode}
                 Game_/tests/${render_test}_tests.cpp
                 Game_/src/client/render/renderer.cpp
                 Game_/src/client/render/depth_buffer.cpp
                 Game_/src/client/render/projection.cpp
+                Game_/src/client/render/texture.cpp
                 Game_/src/client/platform/framebuffer.cpp)
             target_link_libraries(${render_test}_tests_${mode} PRIVATE game_math)
             target_compile_definitions(${render_test}_tests_${mode} PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)

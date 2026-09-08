@@ -57,7 +57,8 @@ void Renderer::ClearDepth(float value) {
 
 void Renderer::DrawMesh(std::span<const MeshVertex> vertices,
                         std::span<const std::uint32_t> indices, const math::Mat4& model,
-                        const math::Mat4& view, const math::Mat4& projection) {
+                        const math::Mat4& view, const math::Mat4& projection,
+                        const DrawParameters& parameters) {
     if (indices.size() % 3 != 0) throw std::invalid_argument("Triangle index count must be a multiple of 3");
     for (const auto index : indices)
         if (index >= vertices.size()) throw std::out_of_range("Mesh vertex index out of range");
@@ -86,22 +87,32 @@ void Renderer::DrawMesh(std::span<const MeshVertex> vertices,
         for (std::size_t j = 0; j < 3; ++j) {
             const auto& c = clip[j];
             const math::Vec3 ndc{c.x / c.w, c.y / c.w, c.z / c.w};
+            const auto& vertex = vertices[indices[i + j]];
+            const float inv_w = 1.0f / c.w;
             screen[j] = {{(ndc.x + 1.0f) * 0.5f * width,
                           (1.0f - ndc.y) * 0.5f * height},
-                         vertices[indices[i + j]].color, ndc.z};
+                         vertex.color, ndc.z, vertex.uv, vertex.uv * inv_w, inv_w};
         }
         // DrawTriangle performs screen-space CCW culling before its AABB loop.
-        DrawTriangle(screen[0], screen[1], screen[2]);
+        DrawTriangle(screen[0], screen[1], screen[2], parameters);
     }
 }
 
 void Renderer::DrawTriangle(const ScreenVertex& v0, const ScreenVertex& v1,
-                            const ScreenVertex& v2) {
+                            const ScreenVertex& v2, const DrawParameters& parameters) {
     SyncDepthSize();
     const int width = framebuffer_.Width();
     const int height = framebuffer_.Height();
     if (width <= 0 || height <= 0) return;
     if (!IsFinite(v0.position) || !IsFinite(v1.position) || !IsFinite(v2.position)) return;
+    if (parameters.texture) {
+        for (const ScreenVertex* vertex : {&v0, &v1, &v2}) {
+            if (!IsFinite(vertex->uv)) return;
+            if (parameters.perspective_correct &&
+                (!IsFinite(vertex->uv_over_w) || !std::isfinite(vertex->inv_w) || vertex->inv_w <= 0.0f))
+                return;
+        }
+    }
 
     const float signedArea = EdgeFunction(v0.position, v1.position, v2.position);
     if (!std::isfinite(signedArea) || std::fabs(signedArea) <= AREA_EPSILON) return;
@@ -145,12 +156,28 @@ void Renderer::DrawTriangle(const ScreenVertex& v0, const ScreenVertex& v1,
             const float w1 = e1 / signedArea;
             const float w2 = e2 / signedArea;
             if (!std::isfinite(w0) || !std::isfinite(w1) || !std::isfinite(w2)) continue;
+            math::Vec2 uv;
+            if (parameters.texture) {
+                if (parameters.perspective_correct) {
+                    const float inv_w = w0 * v0.inv_w + w1 * v1.inv_w + w2 * v2.inv_w;
+                    if (!std::isfinite(inv_w) || inv_w <= 0.0f) continue;
+                    const math::Vec2 uv_over_w = w0 * v0.uv_over_w + w1 * v1.uv_over_w + w2 * v2.uv_over_w;
+                    uv = uv_over_w / inv_w;
+                } else {
+                    // Deliberately affine: raw UV, completely independent of clip w.
+                    uv = w0 * v0.uv + w1 * v1.uv + w2 * v2.uv;
+                }
+                // Reject invalid attributes before depth write; no invisible occluders.
+                if (!IsFinite(uv)) continue;
+            }
             // z_ndc, unlike view-space z, is affine in screen barycentrics.
             // Do NOT divide this interpolation by interpolated reciprocal w.
             const float z = w0 * v0.depth + w1 * v1.depth + w2 * v2.depth;
             const std::size_t index = row + static_cast<std::size_t>(x);
             if (!depth_.TestAndWrite(index, z)) continue;
-            const std::uint32_t color = PackRGB(
+            const std::uint32_t color = parameters.texture
+                ? parameters.texture->Sample(uv.x, uv.y, parameters.wrap_mode)
+                : PackRGB(
                 w0 * c0.r + w1 * c1.r + w2 * c2.r,
                 w0 * c0.g + w1 * c1.g + w2 * c2.g,
                 w0 * c0.b + w1 * c1.b + w2 * c2.b);

@@ -16,21 +16,32 @@ int main() {
         Renderer renderer(fb);
         Timer timer;
 
-        // Eight shared vertices, twelve outward-facing CCW triangles.
-        const std::array<MeshVertex, 8> cubeVertices{{
-            {{-1, -1, -1}, 0xFFFF4040u}, {{1, -1, -1}, 0xFF40FF40u},
-            {{1, 1, -1}, 0xFF4040FFu}, {{-1, 1, -1}, 0xFFFFFF40u},
-            {{-1, -1, 1}, 0xFFFF40FFu}, {{1, -1, 1}, 0xFF40FFFFu},
-            {{1, 1, 1}, 0xFFFFFFFFu}, {{-1, 1, 1}, 0xFFFFA040u}
+        // UV seams require four independent vertices per face (24 total).
+        // Each quad is bottom-left, bottom-right, top-right, top-left, outward CCW.
+        const std::array<MeshVertex, 24> cubeVertices{{
+            {{-1,-1, 1}, 0xFFFFFFFFu, {0,1}}, {{ 1,-1, 1}, 0xFFFFFFFFu, {1,1}},
+            {{ 1, 1, 1}, 0xFFFFFFFFu, {1,0}}, {{-1, 1, 1}, 0xFFFFFFFFu, {0,0}}, // +Z
+            {{ 1,-1,-1}, 0xFFFFFFFFu, {0,1}}, {{-1,-1,-1}, 0xFFFFFFFFu, {1,1}},
+            {{-1, 1,-1}, 0xFFFFFFFFu, {1,0}}, {{ 1, 1,-1}, 0xFFFFFFFFu, {0,0}}, // -Z
+            {{-1,-1,-1}, 0xFFFFFFFFu, {0,1}}, {{-1,-1, 1}, 0xFFFFFFFFu, {1,1}},
+            {{-1, 1, 1}, 0xFFFFFFFFu, {1,0}}, {{-1, 1,-1}, 0xFFFFFFFFu, {0,0}}, // -X
+            {{ 1,-1, 1}, 0xFFFFFFFFu, {0,1}}, {{ 1,-1,-1}, 0xFFFFFFFFu, {1,1}},
+            {{ 1, 1,-1}, 0xFFFFFFFFu, {1,0}}, {{ 1, 1, 1}, 0xFFFFFFFFu, {0,0}}, // +X
+            {{-1, 1,-1}, 0xFFFFFFFFu, {0,1}}, {{-1, 1, 1}, 0xFFFFFFFFu, {1,1}},
+            {{ 1, 1, 1}, 0xFFFFFFFFu, {1,0}}, {{ 1, 1,-1}, 0xFFFFFFFFu, {0,0}}, // +Y
+            {{-1,-1,-1}, 0xFFFFFFFFu, {0,1}}, {{ 1,-1,-1}, 0xFFFFFFFFu, {1,1}},
+            {{ 1,-1, 1}, 0xFFFFFFFFu, {1,0}}, {{-1,-1, 1}, 0xFFFFFFFFu, {0,0}}  // -Y
         }};
         const std::array<std::uint32_t, 36> cubeIndices{{
-            4, 5, 6, 4, 6, 7, // +Z
-            1, 0, 3, 1, 3, 2, // -Z
-            0, 4, 7, 0, 7, 3, // -X
-            5, 1, 2, 5, 2, 6, // +X
-            3, 7, 6, 3, 6, 2, // +Y
-            0, 1, 5, 0, 5, 4  // -Y
+             0, 1, 2,  0, 2, 3,  4, 5, 6,  4, 6, 7,
+             8, 9,10,  8,10,11, 12,13,14, 12,14,15,
+            16,17,18, 16,18,19, 20,21,22, 20,22,23
         }};
+        const Texture checker = Texture::GenerateCheckerboard(128);
+        const Texture pattern = Texture::GenerateAsymmetricPattern(128);
+        DrawParameters parameters{&checker, WrapMode::Clamp, true};
+        bool showPattern = false;
+        bool paused = false;
         const math::Mat4 view = math::Mat4::translation({0, 0, -5});
         // The 320x200 target and 1280x800 window have the same aspect ratio.
         const float aspect = static_cast<float>(fb.Width()) / static_cast<float>(fb.Height());
@@ -57,6 +68,12 @@ int main() {
             if (input.WasPressed(KeyCode::Escape)) {
                 break;
             }
+            const bool toggleInterpolation = input.WasPressed(KeyCode::T);
+            const bool togglePattern = input.WasPressed(KeyCode::F);
+            if (toggleInterpolation) parameters.perspective_correct = !parameters.perspective_correct;
+            if (togglePattern) showPattern = !showPattern;
+            if (input.WasPressed(KeyCode::Space)) paused = !paused;
+            parameters.texture = showPattern ? &pattern : &checker;
 
             // Example reads (no gameplay wired up yet - just proving the API):
             //   bool  moveForward = input.IsDown(KeyCode::W);
@@ -67,18 +84,19 @@ int main() {
             //   int   lookY       = input.MouseDeltaY();
             //   float zoom        = input.MouseWheel();
             // 5. Rotate in radians/second, then draw with MVP = Projection * View * Model.
-            angle = std::fmod(angle + static_cast<float>(dt) * 0.8f, math::TWO_PI);
+            if (!paused) angle = std::fmod(angle + static_cast<float>(dt) * 0.8f, math::TWO_PI);
             const math::Mat4 model = math::Mat4::rotationY(angle) * math::Mat4::rotationX(0.5f);
             fb.Clear(0xFF182030u);
             renderer.ClearDepth();
-            renderer.DrawMesh(cubeVertices, cubeIndices, model, view, projection);
+            renderer.DrawMesh(cubeVertices, cubeIndices, model, view, projection, parameters);
 
             // 6. Present + FPS readout, twice a second.
             fpsDisplayTimer += dt;
-            if (fpsDisplayTimer >= 0.5) {
+            if (fpsDisplayTimer >= 0.5 || toggleInterpolation || togglePattern) {
                 std::wstring title = L"Game | FPS: " + std::to_wstring(static_cast<int>(timer.FPS()))
-                                   + L" | mouse " + std::to_wstring(input.MouseX())
-                                   + L"," + std::to_wstring(input.MouseY());
+                                   + (parameters.perspective_correct ? L" | Perspective-correct" : L" | Affine")
+                                   + (showPattern ? L" | F pattern" : L" | Checkerboard")
+                                   + L" | T: interpolation | F: texture | Space: pause";
                 SetWindowTextW(window.GetHandle(), title.c_str());
                 fpsDisplayTimer = 0.0;
             }
